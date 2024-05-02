@@ -13,4 +13,16 @@ public class Student {
         this.studentName = studentName;
         this.scores = new HashMap<>();
     }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setSubject(Subject subject) {
+        scores.put(subject, new HashMap<>());
+    }
 }
