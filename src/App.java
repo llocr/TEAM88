@@ -1,9 +1,11 @@
+import model.Score;
 import model.Student;
 import model.Subject;
 import model.SubjectType;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class App {
@@ -13,6 +15,8 @@ public class App {
     //데이터 저장소
     private static HashMap<String, Student> studentList;
     private static List<Subject> subjectList;
+    private static Map<Student, List<Subject>> studentSubjectMap;
+    private static Map<String, Score> storedScore;
 
     //index 관리 필드
     private static int studentIndex;
@@ -35,7 +39,7 @@ public class App {
 
     //초기 데이터 생성
     private static void setInitData() {
-        studentList = new HashMap<>();
+        studentList = new HashMap<>(); // 규모가 커질 수 록 부하가 걸려 map이 좋다.
         subjectList = List.of(
                 new Subject(
                         sequence(INDEX_TYPE_SUBJECT),
@@ -155,17 +159,101 @@ public class App {
         /*
         1. 수강생의 과목별 시험 회차 및 점수 등록
         2. 수강생의 과목별 회차 점수 수정
+        -JB-
         3. 수강생의 특정 과목 회차별 등급 조회
         4. 메인 화면 이동
          */
+
+        boolean flag = true;
+        while (flag) {
+            System.out.println("\n==================================");
+            System.out.println("수강생 관리 페이지");
+            System.out.println("1. 수강생의 과목별 시험 회차 및 점수 등록");
+            System.out.println("2. 수강생의 과목별 회차 점수 수정");
+            System.out.println("3. 수강생의 특정 과목 회차별 등급 조회");
+            System.out.println("4. 이전 메뉴로 돌아가기");
+            System.out.print("관리 메뉴를 선택하세요 : ");
+            int input = sc.nextInt();
+
+            switch (input) {
+                case 1 -> createScore();
+                case 2 -> fixScore();
+//                case 3 -> searchGrade();
+                case 3 -> flag = false;
+                default -> {
+                    System.out.println("잘못된 입력입니다.");
+                }
+            }
+        }
     }
+
+
+    private static void createScore(){
+        System.out.println("\n==================================");
+        System.out.println("조회할 학생의 등록코드를 입력해주세요 : ");
+        String studentId = sc.next(); // ST1 -- ST2 같은 형식임
+
+        // 학생의 고유 코드로 등록되어 있는 과목을 찾는다.
+        Student student = studentList.get(studentId);
+        if(student == null){
+            System.out.println("해당 학생이 존재하지 않습니다.");
+            // 오류 반환
+        }
+        // 학생이 수강하는 과목 출력
+        System.out.println("이 수강하는 과목입니다.");
+        for(Subject subject : student.getScores().keySet()){
+            System.out.print(subject.getSubjectName() + " ");
+        }
+        System.out.print("\n어떤 과목을 등록하시겠습니까 ? : ");
+        String subjectName = sc.next(); // 점수를 등록할 과목 입력
+
+        String subjectId = " ";
+        for(Subject subject : subjectList){
+            if(subject.getSubjectName().equals(subjectName)){
+                subjectId = subject.getSubjectId();
+            }
+        }
+
+        Map<Integer, Score> score = student.getScores().get(subjectId);
+        // 저장된 것이 있는 경우
+        if(score != null){
+            // 저장이 되어 있는 회차별 점수가 있을 경우 출력한다.
+            for (Map.Entry<Integer, Score> scoreEntry : score.entrySet()) {
+                System.out.println("회차: " + scoreEntry.getKey() + ", 점수: " + scoreEntry.getValue().getScore());
+            }
+        }
+
+        // 우선적인 회차와 스코어 등록
+        System.out.println("등록하실 회차와 점수를 입력해주세요 : ");
+        int round = sc.nextInt();
+        int scores = sc.nextInt();
+
+        storedScore = new HashMap<>();
+        storedScore.put(sequence(INDEX_TYPE_SCORE), new Score(
+                sequence(INDEX_TYPE_SCORE),
+                subjectId,
+                studentId,
+                round,
+                scores
+        ));
+    }
+
+    private static void fixScore(){
+        System.out.println("\n==================================");
+        System.out.print("수정할 과목을 입력해주세요 :  ");
+        String subjectName = sc.next();
+        Student student = studentList.get(subjectName);
+
+
+    }
+
 
     private static void createStudent() {
         System.out.println("\n==================================");
         System.out.print("등록할 수강생 이름을 입력해 주세요 : ");
-        String name = sc.next();
+        String name = sc.next(); // Name
 
-        //새로운 수강생 객체 생성
+        //새로운 수강생 객체 생성 - 고유 번호
         Student student = new Student(sequence(INDEX_TYPE_STUDENT), name);
 
         System.out.println("\n필수 과목 최소 3개, 선택 과목 최소 2개를 선택하셔야 합니다.");
@@ -207,7 +295,6 @@ public class App {
                     //이미 선택된 과목이면 알려 주고 다시 선택도록
                     System.out.println("이미 선택된 과목입니다.");
                 }
-
             } else if (inputNum == 0) {
                 //프로그램 종료 원하면, 필수과목과 선택과목 최소 개수가 채워졌는지 확인
                 if(mandatory >= 3 && choice >= 2) {

@@ -15,4 +15,8 @@ public class Score {
         this.round = round;
         this.score = score;
     }
+
+    public int getScore() {
+        return score;
+    }
 }
