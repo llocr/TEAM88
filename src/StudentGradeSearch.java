@@ -1,4 +1,4 @@
-/*4회차, 상태를 입력하면 상테에 맞는 학생의 이름, 아이디, 과목, 성적 조회*/
+
 import java.util.HashMap;
 import java.util.Scanner;
 
