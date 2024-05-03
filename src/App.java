@@ -2,9 +2,7 @@ import model.Student;
 import model.Subject;
 import model.SubjectType;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
     //스캐너
@@ -141,7 +139,7 @@ public class App {
 
             switch (input) {
                 case 1 -> createStudent();
-                //case 2 만들어서 추가해주세요!
+                case 2 -> studentInquiry();
                 case 3 -> flag = false;
                 default -> {
                     System.out.println("잘못된 입력입니다.");
@@ -172,13 +170,13 @@ public class App {
         System.out.println("\n=== 수강할 과목을 선택해 주세요 ===");
         System.out.println("0. 수강 과목 선택 종료하기");
         //subjectList에 저장된 과목들 출력
-        for (int i = 1; i<subjectList.size(); i++) {
+        for (int i = 1; i < subjectList.size(); i++) {
             System.out.println(i + ". " + subjectList.get(i).getSubjectName()
                     + ", (" + subjectList.get(i).getSubjectType().getValue() + ")");
         }
 
         boolean flag = true;
-        boolean[] checkSubject = new boolean[subjectList.size()+1]; //중복 확인 배열
+        boolean[] checkSubject = new boolean[subjectList.size() + 1]; //중복 확인 배열
         int mandatory = 0;      //필수과목
         int choice = 0;         //선택과목
 
@@ -186,9 +184,9 @@ public class App {
             System.out.print("\n과목 번호 입력 : ");
             int inputNum = sc.nextInt();
 
-            if(inputNum > 0 && inputNum <= subjectList.size()) {
+            if (inputNum > 0 && inputNum <= subjectList.size()) {
                 //이미 선택된 과목인지 확인하기
-                if(!checkSubject[inputNum]) {
+                if (!checkSubject[inputNum]) {
                     Subject selectedSubject = subjectList.get(inputNum - 1);
                     student.setSubject(selectedSubject);
                     System.out.println(selectedSubject.getSubjectName() + " 과목이 추가되었습니다.");
@@ -197,7 +195,7 @@ public class App {
                     checkSubject[inputNum] = true;
 
                     //필수과목인지 선택과목인지 확인하고, 값 올려주기
-                    if(selectedSubject.getSubjectType().equals(SubjectType.MANDATORY)) mandatory++;
+                    if (selectedSubject.getSubjectType().equals(SubjectType.MANDATORY)) mandatory++;
                     else choice++;
 
                     System.out.println("\n현재 선택된 과목 갯수입니다.");
@@ -210,7 +208,7 @@ public class App {
 
             } else if (inputNum == 0) {
                 //프로그램 종료 원하면, 필수과목과 선택과목 최소 개수가 채워졌는지 확인
-                if(mandatory >= 3 && choice >= 2) {
+                if (mandatory >= 3 && choice >= 2) {
                     flag = false;
                 } else {
                     System.out.println("수강할 과목 개수가 부족합니다. 더 선택해 주세요.");
@@ -227,5 +225,19 @@ public class App {
         //studentList에 수강생 등록
         studentList.put(student.getStudentId(), student);
         System.out.println("\n" + name + " 수강생 등록 성공!");
+
+
     }
+
+    private static void studentInquiry() {
+        //Iterator 로 studentList 값 조회
+        Iterator<Student> iterator = studentList.values().iterator();
+        //studentList hashNext 로 다음 값이 없을 때까지 반복!
+        while (iterator.hasNext()) {
+            Student value = iterator.next();
+            System.out.print("[" + value.getStudentId() + "]-" + value.getStudentName() + " | ");
+        }
+
+    }
+
 }
