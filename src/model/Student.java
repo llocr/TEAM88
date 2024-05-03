@@ -6,7 +6,7 @@ import java.util.Map;
 public class Student {
     private String studentId;
     private String studentName;
-    private Map<Subject, Map<Integer, Score>> scores;
+    private Map<Subject, Map<String, Score>> scores;
 
     public Student(String studentId, String studentName) {
         this.studentId = studentId;
