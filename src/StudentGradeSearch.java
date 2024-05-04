@@ -68,7 +68,7 @@ public class StudentGradeSearch {
                     for (Map.Entry<Integer, Score> scoreEntry : scoreMap.entrySet()) {
                         int round = scoreEntry.getKey();
                         Score score = scoreEntry.getValue();
-                        System.out.println("회차: " + round + ", 성적: " + score.getGrade());
+                        System.out.println("회차: " + round + ", 성적: " + score.getScore());
                     }
                     break;
                 }
