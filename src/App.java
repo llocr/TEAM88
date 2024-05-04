@@ -37,8 +37,7 @@ public class App {
 
     //초기 데이터 생성
     private static void setInitData() {
-        studentList = new HashMap<>();
-        scoreList = new ArrayList<>();
+        studentList = new HashMap<>(); // 규모가 커질 수 록 부하가 걸려 map이 좋다.
         subjectList = List.of(
                 new Subject(
                         sequence(INDEX_TYPE_SUBJECT),
@@ -177,8 +176,8 @@ public class App {
             switch (input) {
                 case 1 -> createScore();
                 case 2 -> fixScore();
-//                case 3 -> searchGrade();
-                case 3 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
+               case 3 ->  displayGradeView();
+                case 4 -> flag = false; // 이전 메뉴로 돌아가기
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -291,6 +290,40 @@ public class App {
         Student student = studentList.get(subjectName);
 
 
+    }
+
+    private static void displayGradeView() {
+        System.out.print("학생의 ID를 입력하세요: ");
+        String studentId = sc.next();
+
+        System.out.print("과목을 입력하세요 (Java, 객체지향, Spring, JPA, MySQL, 디자인 패턴, Spring Security, Redis, MongoDB): ");
+        String subjectName = sc.next();
+
+        // 학생을 검색합니다.
+        Student student = studentList.get(studentId);
+
+        // 학생이 존재하는지 확인합니다.
+        if (student == null) {
+            System.out.println("해당 학생을 찾을 수 없습니다.");
+            return;
+        }
+
+        // 주어진 과목의 점수를 검색합니다.
+        Map<Integer, Score> scores = student.getScores().get(subjectName);
+
+        // 주어진 과목에 대한 점수가 있는지 확인합니다.
+        if (scores == null || scores.isEmpty()) {
+            System.out.println("해당 학생의 성적이 없습니다.");
+            return;
+        }
+
+        // 점수를 출력합니다.
+        System.out.println("[" + subjectName + "] 성적 조회");
+        for (Map.Entry<Integer, Score> entry : scores.entrySet()) {
+            int round = entry.getKey();
+            Score score = entry.getValue();
+            System.out.println("회차: " + round + ", 성적: " + score.getScore());
+        }
     }
 
 

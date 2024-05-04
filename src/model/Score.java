@@ -8,7 +8,7 @@ public class Score {
     private int score;
     private Grade grade;
 
-    public Score(String scoreId, String subjectId, String studentId, int round, int score, SubjectType type) {
+    public Score(String scoreId, String subjectId, String studentId, int round, int score) {
         this.scoreId = scoreId;
         this.subjectId = subjectId;
         this.studentId = studentId;
