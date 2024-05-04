@@ -11,6 +11,10 @@ public class Subject {
         this.subjectType = subjectType;
     }
 
+    public String getSubjectId() {
+        return subjectId;
+    }
+
     public String getSubjectName() {
         return subjectName;
     }
