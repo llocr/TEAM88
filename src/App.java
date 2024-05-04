@@ -1,3 +1,4 @@
+import model.Score;
 import model.Student;
 import model.Subject;
 import model.SubjectType;
@@ -9,8 +10,9 @@ public class App {
     private static Scanner sc = new Scanner(System.in);
 
     //데이터 저장소
-    private static HashMap<String, Student> studentList;
-    private static List<Subject> subjectList;
+    private static HashMap<String, Student> studentList;    //수강생 리스트
+    private static List<Subject> subjectList;               //과목 리스트
+    private static List<Score> scoreList;                   //점수 리스트
 
     //index 관리 필드
     private static int studentIndex;
@@ -34,6 +36,7 @@ public class App {
     //초기 데이터 생성
     private static void setInitData() {
         studentList = new HashMap<>();
+        scoreList = new ArrayList<>();
         subjectList = List.of(
                 new Subject(
                         sequence(INDEX_TYPE_SUBJECT),
