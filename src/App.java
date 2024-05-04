@@ -1,3 +1,4 @@
+import model.Score;
 import model.Student;
 import model.Subject;
 import model.SubjectType;
@@ -9,8 +10,9 @@ public class App {
     private static Scanner sc = new Scanner(System.in);
 
     //데이터 저장소
-    private static HashMap<String, Student> studentList;
-    private static List<Subject> subjectList;
+    private static HashMap<String, Student> studentList;    //수강생 리스트
+    private static List<Subject> subjectList;               //과목 리스트
+    private static List<Score> scoreList;                   //점수 리스트
 
     //index 관리 필드
     private static int studentIndex;
@@ -34,6 +36,7 @@ public class App {
     //초기 데이터 생성
     private static void setInitData() {
         studentList = new HashMap<>();
+        scoreList = new ArrayList<>();
         subjectList = List.of(
                 new Subject(
                         sequence(INDEX_TYPE_SUBJECT),
@@ -188,7 +191,9 @@ public class App {
                 //이미 선택된 과목인지 확인하기
                 if (!checkSubject[inputNum]) {
                     Subject selectedSubject = subjectList.get(inputNum - 1);
-                    student.setSubject(selectedSubject);
+
+                    //선택한 과목의 Id값 넣어주기
+                    student.setSubject(selectedSubject.getSubjectId());
                     System.out.println(selectedSubject.getSubjectName() + " 과목이 추가되었습니다.");
 
                     //선택한 과목 체크하기
@@ -225,23 +230,21 @@ public class App {
         //studentList에 수강생 등록
         studentList.put(student.getStudentId(), student);
         System.out.println("\n" + name + " 수강생 등록 성공!");
-
-
     }
 
     private static void studentInquiry() {
         if(studentList.isEmpty()){
             System.out.println("\n==================================");
             System.out.print("등록된 수강생이 없습니다! ");
+        } else {
+            //Iterator 로 studentList 값 조회
+            Iterator<Student> iterator = studentList.values().iterator();
+            //studentList hashNext 로 다음 값이 없을 때까지 반복!
+            while (iterator.hasNext()) {
+                Student value = iterator.next();
+                System.out.print("[" + value.getStudentId() + "]-" + value.getStudentName() + " | ");
+            }
         }
-        //Iterator 로 studentList 값 조회
-        Iterator<Student> iterator = studentList.values().iterator();
-        //studentList hashNext 로 다음 값이 없을 때까지 반복!
-        while (iterator.hasNext()) {
-            Student value = iterator.next();
-            System.out.print("[" + value.getStudentId() + "]-" + value.getStudentName() + " | ");
-        }
-
     }
 
 }
