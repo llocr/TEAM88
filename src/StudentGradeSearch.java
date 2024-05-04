@@ -1,97 +1,84 @@
+import model.*;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class StudentGradeSearch {
+    // 스캐너
+    private static Scanner sc = new Scanner(System.in);
+
+    // 데이터 저장소
+    private static HashMap<String, Student> studentList;
+
+    // 메인 실행
     public static void main(String[] args) {
-        // 학생 이름을 key로하고 세션 및 과목별 성적을 value으로하는 HashMap 생성
-        // HashMap<String, HashMap<String, HashMap<String, String>>> 첫 번째 key인 String은 학생의 이름
-        // HashMap<String, HashMap<String, HashMap<String, String>>> 두 번째 key인 String은 세션
-       //  HashMap<String, HashMap<String, HashMap<String, String>>> 세 번째 key인 String은 과목
-        // HashMap<String, HashMap<String, HashMap<String, String>>> 마지막 value인 String은 과목의 성적
-        HashMap<String, HashMap<String, HashMap<String, String>>> studentGrades = new HashMap<>();
+        setInitData();
+        try {
+            displayMainView();
+        } catch (Exception e) {
+            System.out.println("오류가 발생했습니다. 프로그램을 종료합니다.");
+        }
+    }
 
-        // 테스트용 샘플 데이터
-        HashMap<String, HashMap<String, String>> DoyoungSessions = new HashMap<>();   // 첫 번째 key는 세션, 내부 키는 과목, value는 해당 과목 성적
-        HashMap<String, String> DoyoungGradesSession1 = new HashMap<>();                      // key - 과목, value - 과목 성적
-        DoyoungGradesSession1.put("객체지향언어", "A");
-        DoyoungGradesSession1.put("자바", "B");
-        DoyoungGradesSession1.put("SQL", "D");
-        DoyoungSessions.put("1회차", DoyoungGradesSession1);
+    // 초기 데이터 생성
+    private static void setInitData() {
+        studentList = new HashMap<>();
+    }
 
-        HashMap<String, String> DoyoungGradesSession2 = new HashMap<>();                    // key - 과목, value - 과목 성적
-        DoyoungGradesSession2.put("객체지향언어", "F");
-        DoyoungGradesSession2.put("자바", "B");
-        DoyoungGradesSession2.put("SQL", "A");
-        DoyoungSessions.put("2회차", DoyoungGradesSession2);
+    // main view
+    private static void displayMainView() {
+        boolean flag = true;
+        while (flag) {
+            System.out.println("\n==================================");
+            System.out.println("내일배움캠프 수강생 관리 프로그램 실행 중...");
+            System.out.println("1. 전체 회차 성적 조회");
+            System.out.println("2. 프로그램 종료");
+            System.out.print("메뉴를 선택하세요: ");
+            int input = sc.nextInt();
 
-        HashMap<String, String> DoyoungGradesSession3 = new HashMap<>();                     // key - 과목, value - 과목 성적
-        DoyoungGradesSession3.put("객체지향언어", "D");
-        DoyoungGradesSession3.put("자바", "C");
-        DoyoungGradesSession3.put("SQL", "B");
-        DoyoungSessions.put("3회차", DoyoungGradesSession3);
+            switch (input) {
+                case 1 -> displayScoreView();
+                case 2 -> flag = false; // 프로그램 종료
+                default -> System.out.println("잘못된 입력입니다.");
+            }
+        }
+        System.out.println("프로그램을 종료합니다.");
+    }
 
-        studentGrades.put("도영", DoyoungSessions);
+    // 전체 회차 성적 조회
+    private static void displayScoreView() {
+        System.out.print("학생의 ID를 입력하세요: ");
+        String studentId = sc.next();
 
-        HashMap<String, HashMap<String, String>> JennieSessions = new HashMap<>();        // 첫 번째 key - 세션, 내부 key - 과목, value - 해당 과목 성적
-        HashMap<String, String> JennieGradesSession1 = new HashMap<>();                           // key - 과목, value - 과목 성적
-        JennieGradesSession1.put("객체지향언어", "A");
-        JennieGradesSession1.put("자바", "B");
-        JennieGradesSession1.put("SQL", "C");
-        JennieSessions.put("1회차", JennieGradesSession1);
+        System.out.print("과목을 입력하세요 (Java, 객체지향, Spring, JPA, MySQL, 디자인 패턴, Spring Security, Redis, MongoDB): ");
+        String subjectName = sc.next();
 
-        HashMap<String, String> JennieGradesSession2 = new HashMap<>();                         // key - 과목, value - 과목 성적
-        JennieGradesSession2.put("객체지향언어", "F");
-        JennieGradesSession2.put("자바", "D");
-        JennieGradesSession2.put("SQL", "C");
-        JennieSessions.put("2회차", JennieGradesSession2);
+        if (studentList.containsKey(studentId)) {
+            Student student = studentList.get(studentId);
+            Map<Subject, Map<Integer, Score>> scores = student.getScores();
+            boolean foundSubject = false;
 
-        HashMap<String, String> JennieGradesSession3 = new HashMap<>();                          // key - 과목, value - 과목 성적
-        JennieGradesSession3.put("객체지향언어", "B");
-        JennieGradesSession3.put("자바", "A");
-        JennieGradesSession3.put("SQL", "B");
-        JennieSessions.put("3회차", JennieGradesSession3);
-
-        studentGrades.put("제니", JennieSessions);
-
-        // 사용자 입력을 읽기위한 Scanner 객체 생성
-        Scanner scanner = new Scanner(System.in);
-
-        // 사용자에게 학생 이름 입력 요청
-        System.out.print("학생의 이름을 입력하세요: ");
-        String studentName = scanner.nextLine();
-
-        // 사용자에게 과목 입력 요청
-        System.out.print("과목을 입력하세요 (객체지향언어, 자바, SQL): ");
-        String subject = scanner.nextLine();
-
-        // 학생 레코드 확인
-        if (studentGrades.containsKey(studentName)) {
-            HashMap<String, HashMap<String, String>> sessions = studentGrades.get(studentName);         //외부 key - 세션 . 내부 key - 과목 , value - 과목 성적
-            boolean foundSubject = false;       // 해당 과목을 찾았는지 여부 변수 초기화
-
-            // 회차별 순서를 위한 변수
-            int sessionNumber = 1;
-
-            // 학생의 모든 세션 반복
-            for (String session : sessions.keySet()) {
-                HashMap<String, String> grades = sessions.get(session);     // 특정 세션에 대한 과목 성적을 담고 있는 해시맵, key - 과목, value - 과목의 성적
-                if (grades.containsKey(subject)) {                 // 해당 과목이 세션에 있는지 확인
-                    foundSubject = true;                               // 과목을 찾았음을 표시
-                    String grade = grades.get(subject);        // 해당 과목의 성적 가져오기
-                    System.out.println(studentName + " 학생의 " + sessionNumber + "회차의 " + subject + " 성적은: " + grade);        // 성적 출력
+            for (Map.Entry<Subject, Map<Integer, Score>> entry : scores.entrySet()) {
+                Subject subject = entry.getKey();
+                if (subject.getSubjectName().equals(subjectName)) {
+                    foundSubject = true;
+                    Map<Integer, Score> scoreMap = entry.getValue();
+                    System.out.println("[" + subjectName + "] 성적 조회");
+                    for (Map.Entry<Integer, Score> scoreEntry : scoreMap.entrySet()) {
+                        int round = scoreEntry.getKey();
+                        Score score = scoreEntry.getValue();
+                        System.out.println("회차: " + round + ", 성적: " + score.getGrade());
+                    }
+                    break;
                 }
-                sessionNumber++; // 다음 회차로 이동
             }
 
-            if (!foundSubject) {        // 과목을 찾지 못한 경우
-                System.out.println(studentName + " 학생의 " + subject + " 성적이 없습니다.");
+            if (!foundSubject) {
+                System.out.println("해당 과목의 성적이 없습니다.");
             }
         } else {
             System.out.println("학생을 찾을 수 없습니다.");
         }
-
-        // Scanner 닫기
-        scanner.close();
     }
 }

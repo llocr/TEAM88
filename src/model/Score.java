@@ -16,7 +16,18 @@ public class Score {
         this.score = score;
     }
 
-    public int getScore() {
-        return score;
+    // 점수를 등급으로 변환하여 반환하는 메서드
+    public String getGrade() {
+        if (score >= 90) {
+            return "A";
+        } else if (score >= 80) {
+            return "B";
+        } else if (score >= 70) {
+            return "C";
+        } else if (score >= 60) {
+            return "D";
+        } else {
+            return "F";
+        }
     }
 }
