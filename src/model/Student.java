@@ -7,14 +7,11 @@ public class Student {
     private String studentId;
     private String studentName;
     private Map<Subject, Map<Integer, Score>> scores;
-    // table과 같이 main에서도 동작할 수 있게 static으로 동작하게 하는것도 좋다.
-
-    public Student(){}
 
     public Student(String studentId, String studentName) {
         this.studentId = studentId;
         this.studentName = studentName;
-        this.scores = new HashMap<>();
+        this.subjects = new ArrayList<>();
     }
 
     public Map<Subject, Map<Integer, Score>> getScores() {
