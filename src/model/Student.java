@@ -24,8 +24,20 @@ public class Student {
         return studentName;
     }
 
+    public String getStatus() {
+        return status.name();
+    }
+
     public void setSubject(String subjectId) {
         //수강과목 리스트에 선택한 과목 ID 값 추가
         subjects.add(subjectId);
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 }
