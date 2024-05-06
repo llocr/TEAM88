@@ -7,11 +7,13 @@ public class Student {
     private String studentId;
     private String studentName;
     private List<String> subjects;
+    private Status status;
 
     public Student(String studentId, String studentName) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.subjects = new ArrayList<>();
+        this.status = Status.GREEN;         //수강생 상태 기본값 = GREEN
     }
 
     public String getStudentId() {
