@@ -227,6 +227,9 @@ public class App {
         scoreList.add(new Score(sequence("SCORE"),
                 subjectId, studentId, round, scores));
 
+        // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
+
+
     }
 
     private static void fixScore(){
