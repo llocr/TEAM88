@@ -227,14 +227,14 @@ public class App {
 
         // 점수 등록
         scoreList.add(new Score(sequence(INDEX_TYPE_SCORE),
-                subjectId, studentId, round, scores));
+                subjectId, studentId, round, scores, type));
         // 등록한 과목, 회차, 점수(등급)을 출력
 
 
         System.out.println("학생 : " + student.getStudentName());
 
         System.out.println("과목명 : " + sbName + "에 " + round + "회차 " + scores + "(" +
-                scoreList.get(round - 1).calculateGrade(scores, type) + ")" + "을 등록했습니다.");
+                scoreList.get(round - 1).getGrade() + ")" + "을 등록했습니다.");
         // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
 
 
@@ -247,7 +247,7 @@ public class App {
         System.out.print("과목 ID를 입력하세요: ");
         String subjectId = sc.next();
 
-        System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:");
+        System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:" + GradeCalculator.calculateGrade(60,SubjectType.MANDATORY));
 
         // 모든 회차를 반복하고 학점을 표시
         for (int round = 1; ; round++) {
