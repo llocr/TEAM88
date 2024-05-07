@@ -195,10 +195,16 @@ public class App {
             System.out.println("해당 학생이 존재하지 않습니다.");
             // 오류 반환
         }
+
         // 학생이 수강하는 과목 출력
         System.out.println(student.getStudentName() + "이 수강하는 과목입니다.");
-        for(String subject : student.getSubjects()){ // SU1, SU2 이런식으로 출력됩니다.
-            System.out.print(subject + " ");
+        for(String subjecId : student.getSubjects()) {
+            for(Subject subject : subjectList) {
+                if(subject.getSubjectId().equals(subjecId)) {
+                    System.out.println(subject.getSubjectId()+ " - " + subject.getSubjectName());
+                    break;
+                }
+            }
         }
 
         System.out.println("\n==================================");
@@ -206,13 +212,16 @@ public class App {
         String subjectId = sc.next();
         // 입력한 과목이 유효한지 확인
         boolean foundSubject = false;
+        String sbName = "";
+        SubjectType type = SubjectType.MANDATORY;
         for (Subject subject : subjectList) {
             if (subject.getSubjectId().equals(subjectId)) {
+                type = subject.getSubjectType();
+                sbName = subject.getSubjectName();
                 foundSubject = true;
                 break;
             }
         }
-
         if(!foundSubject){
             System.out.println("해당 과목은 등록되어 있지 않습니다.");
         }
@@ -224,9 +233,15 @@ public class App {
         int scores = sc.nextInt();
 
         // 점수 등록
-        scoreList.add(new Score(sequence("SCORE"),
+        scoreList.add(new Score(sequence(INDEX_TYPE_SCORE),
                 subjectId, studentId, round, scores));
+        // 등록한 과목, 회차, 점수(등급)을 출력
 
+
+        System.out.println("학생 : " + student.getStudentName());
+
+        System.out.println("과목명 : "+ sbName + "에 " + round+ "회차 " + scores +"(" +
+                        scoreList.get(round-1).calculateGrade(scores, type) + ")" +"을 등록했습니다.");
         // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
 
 
