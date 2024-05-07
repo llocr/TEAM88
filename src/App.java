@@ -196,42 +196,37 @@ public class App {
             // 오류 반환
         }
         // 학생이 수강하는 과목 출력
-        System.out.println("이 수강하는 과목입니다.");
-        for(Subject subject : student.getScores().keySet()){
-            System.out.print(subject.getSubjectName() + " ");
+        System.out.println(student.getStudentName() + "이 수강하는 과목입니다.");
+        for(String subject : student.getSubjects()){ // SU1, SU2 이런식으로 출력됩니다.
+            System.out.print(subject + " ");
         }
-        System.out.print("\n어떤 과목을 등록하시겠습니까 ? : ");
-        String subjectName = sc.next(); // 점수를 등록할 과목 입력
 
-        String subjectId = " ";
-        for(Subject subject : subjectList){
-            if(subject.getSubjectName().equals(subjectName)){
-                subjectId = subject.getSubjectId();
+        System.out.println("\n==================================");
+        System.out.println("등록할 과목을 선택해주세요.");
+        String subjectId = sc.next();
+        // 입력한 과목이 유효한지 확인
+        boolean foundSubject = false;
+        for (Subject subject : subjectList) {
+            if (subject.getSubjectId().equals(subjectId)) {
+                foundSubject = true;
+                break;
             }
         }
 
-        Map<Integer, Score> score = student.getScores().get(subjectId);
-        // 저장된 것이 있는 경우
-        if(score != null){
-            // 저장이 되어 있는 회차별 점수가 있을 경우 출력한다.
-            for (Map.Entry<Integer, Score> scoreEntry : score.entrySet()) {
-                System.out.println("회차: " + scoreEntry.getKey() + ", 점수: " + scoreEntry.getValue().getScore());
-            }
+        if(!foundSubject){
+            System.out.println("해당 과목은 등록되어 있지 않습니다.");
         }
 
         // 우선적인 회차와 스코어 등록
-        System.out.println("등록하실 회차와 점수를 입력해주세요 : ");
+        System.out.println("등록하실 회차를 입력해주세요 : ");
         int round = sc.nextInt();
+        System.out.println("등록하실 점수를 입력해주세요 : ");
         int scores = sc.nextInt();
 
-        storedScore = new HashMap<>();
-        storedScore.put(sequence(INDEX_TYPE_SCORE), new Score(
-                sequence(INDEX_TYPE_SCORE),
-                subjectId,
-                studentId,
-                round,
-                scores
-        ));
+        // 점수 등록
+        scoreList.add(new Score(sequence("SCORE"),
+                subjectId, studentId, round, scores));
+
     }
 
     private static void fixScore(){
