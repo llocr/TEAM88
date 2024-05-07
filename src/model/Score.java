@@ -12,6 +12,12 @@ public class Score {
     private int score;
     private Grade grade;
 
+    private static final int[] mandatoryThresholds = {95, 90, 80, 70, 60, 0};
+    private static final Grade[] mandatoryGrades = {Grade.A, Grade.B, Grade.C, Grade.D, Grade.F, Grade.N};
+
+    private static final int[] choiceThresholds = {90, 80, 70, 60, 50, 0};
+    private static final Grade[] choiceGrades = {Grade.A, Grade.B, Grade.C, Grade.D, Grade.F, Grade.N};
+
     public Score(String scoreId, String subjectId, String studentId, int round, int score) {
         this.scoreId = scoreId;
         this.subjectId = subjectId;
@@ -26,33 +32,31 @@ public class Score {
         return score;
     }
 
-    public Grade setGrade() {
-        switch(score){
-            case 10:
-            case 9:
-                grade = Grade.A;
-                break;
-            case 8:
-                grade = Grade.B;
-                break;
-            case 7:
-                grade = Grade.C;
-                break;
-            case 6:
-                grade = Grade.D;
-                break;
-            case 5:
-            case 4:
-            case 3:
-            case 2:
-            case 1:
-                grade = Grade.F;
-                break;
-            default:
-                grade = Grade.N;
+    public Grade calculateGrade(int score, SubjectType type) {
+        int[] thresholds;
+        Grade[] grades;
+
+        if (type == SubjectType.MANDATORY) {
+            thresholds = mandatoryThresholds;
+            grades = mandatoryGrades;
+        } else {
+            thresholds = choiceThresholds;
+            grades = choiceGrades;
         }
 
-        return grade;
+        for (int i = 0; i < thresholds.length; i++) {
+            if (score >= thresholds[i]) {
+                grade = grades[i];
+                return grade;
+            }
+        }
+        grade = Grade.N;
+        return grade; // Default, should not happen
+    }
+
+    // 학점을 반환하는 메서드
+    public Grade getGrade() {
+        return this.grade;
     }
 
 
@@ -75,5 +79,12 @@ public class Score {
 
 
     public static HashMap<String, List<Score>> scoreMap = new HashMap<>();
+
+
+
+
+
+
+
 
 }

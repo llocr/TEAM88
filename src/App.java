@@ -152,12 +152,6 @@ public class App {
 
     //점수 관리 뷰
     private static void displayScoreView() {
-        /*
-        1. 수강생의 과목별 시험 회차 및 점수 등록
-        2. 수강생의 과목별 회차 점수 수정
-        3. 수강생의 특정 과목 회차별 등급 조회
-        4. 메인 화면 이동
-         */
 
         boolean flag = true;
         while (flag) {
@@ -173,8 +167,8 @@ public class App {
             switch (input) {
                 case 1 -> createScore();
                 case 2 -> updateScore();
-//                case 3 -> searchGrade();
-                case 3 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
+                case 3 -> displayGradeView();
+                case 4 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -194,10 +188,16 @@ public class App {
             System.out.println("해당 학생이 존재하지 않습니다.");
             // 오류 반환
         }
+
         // 학생이 수강하는 과목 출력
         System.out.println(student.getStudentName() + "이 수강하는 과목입니다.");
-        for (String subject : student.getSubjects()) { // SU1, SU2 이런식으로 출력됩니다.
-            System.out.print(subject + " ");
+        for (String subjecId : student.getSubjects()) {
+            for(Subject subject : subjectList) {
+                if(subject.getSubjectId().equals(subjecId)) {
+                    System.out.println(subject.getSubjectId()+ " - " + subject.getSubjectName());
+                    break;
+                }
+            }
         }
 
         System.out.println("\n==================================");
@@ -205,13 +205,16 @@ public class App {
         String subjectId = sc.next();
         // 입력한 과목이 유효한지 확인
         boolean foundSubject = false;
+        String sbName = "";
+        SubjectType type = SubjectType.MANDATORY;
         for (Subject subject : subjectList) {
             if (subject.getSubjectId().equals(subjectId)) {
+                type = subject.getSubjectType();
+                sbName = subject.getSubjectName();
                 foundSubject = true;
                 break;
             }
         }
-
         if (!foundSubject) {
             System.out.println("해당 과목은 등록되어 있지 않습니다.");
         }
@@ -223,17 +226,50 @@ public class App {
         int scores = sc.nextInt();
 
         // 점수 등록
-        scoreList.add(new Score(sequence("SCORE"),
+        scoreList.add(new Score(sequence(INDEX_TYPE_SCORE),
                 subjectId, studentId, round, scores));
-        System.out.println("점수가 성공적으로 등록되었습니다.");
-        System.out.println("현재 점수 리스트 크기: " + scoreList.size());
-        System.out.println("등록된 점수: " + scores + ", 학생 ID: " + studentId + ", 과목 ID: " + subjectId);
+        // 등록한 과목, 회차, 점수(등급)을 출력
 
+
+        System.out.println("학생 : " + student.getStudentName());
+
+        System.out.println("과목명 : "+ sbName + "에 " + round+ "회차 " + scores +"(" +
+                        scoreList.get(round-1).calculateGrade(scores, type) + ")" +"을 등록했습니다.");
         // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
 
 
     }
 
+
+
+private static void displayGradeView() {
+    System.out.print("학생 ID를 입력하세요: ");
+    String studentId = sc.next();
+    System.out.print("과목 ID를 입력하세요: ");
+    String subjectId = sc.next();
+
+    System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:");
+
+    // 모든 회차를 반복하고 학점을 표시
+    for (int round = 1; ; round++) {
+        Grade grade = findGrade(subjectId, studentId, round);
+        if (grade == Grade.N) {
+            break; // 해당 회차의 학점이 없으면 중지
+        }
+        System.out.println(round + "회차 : " + grade);
+    }
+}
+
+    private static Grade findGrade(String subjectId, String studentId, int round) {
+        for (Score score : scoreList) {
+            if (score.getSubjectId().equals(subjectId) && score.getStudentId().equals(studentId) && score.getRound() == round) {
+                // 저장된 학점을 가져옴
+                return score.getGrade();
+            }
+        }
+        // 해당 회차에 대한 학점이 없을 경우 기본값으로 N을 반환
+        return Grade.N;
+    }
 
     private static void createStudent() {
         System.out.println("\n==================================");
@@ -304,10 +340,12 @@ public class App {
         //studentList에 수강생 등록
         studentList.put(student.getStudentId(), student);
         System.out.println("\n" + name + " 수강생 등록 성공!");
+
+
     }
 
     private static void studentInquiry() {
-        if (studentList.isEmpty()) {
+        if(studentList.isEmpty()){
             System.out.println("\n==================================");
             System.out.print("등록된 수강생이 없습니다! ");
         } else {
