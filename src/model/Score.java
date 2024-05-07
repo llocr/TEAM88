@@ -15,7 +15,49 @@ public class Score {
         this.round = round;
         this.score = score;
     }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
     public int getScore() {
         return score;
+    }
+
+    public Grade setGrade() {
+        switch(score){
+            case 10:
+            case 9:
+                grade = Grade.A;
+                break;
+            case 8:
+                grade = Grade.B;
+                break;
+            case 7:
+                grade = Grade.C;
+                break;
+            case 6:
+                grade = Grade.D;
+                break;
+            case 5:
+            case 4:
+            case 3:
+            case 2:
+            case 1:
+                grade = Grade.F;
+                break;
+            default:
+                grade = Grade.N;
+        }
+
+        return grade;
     }
 }

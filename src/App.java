@@ -1,7 +1,4 @@
-import model.Score;
-import model.Student;
-import model.Subject;
-import model.SubjectType;
+import model.*;
 
 import java.util.*;
 
@@ -134,16 +131,18 @@ public class App {
         while (flag) {
             System.out.println("\n==================================");
             System.out.println("수강생 관리 페이지");
+            System.out.println("0. 이전 메뉴로 돌아가기");
             System.out.println("1. 수강생 등록하기");
             System.out.println("2. 수강생 전체 목록 조회");
-            System.out.println("3. 이전 메뉴로 돌아가기");
+            System.out.println("3. 수강생 정보 수정하기");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
             switch (input) {
+                case 0 -> flag = false;
                 case 1 -> createStudent();
                 case 2 -> studentInquiry();
-                case 3 -> flag = false;
+                case 3 -> modifyStudentInfo();
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -153,13 +152,127 @@ public class App {
 
     //점수 관리 뷰
     private static void displayScoreView() {
-        /*
-        1. 수강생의 과목별 시험 회차 및 점수 등록
-        2. 수강생의 과목별 회차 점수 수정
-        3. 수강생의 특정 과목 회차별 등급 조회
-        4. 메인 화면 이동
-         */
+
+        boolean flag = true;
+        while (flag) {
+            System.out.println("\n==================================");
+            System.out.println("수강생 관리 페이지");
+            System.out.println("1. 수강생의 과목별 시험 회차 및 점수 등록");
+            System.out.println("2. 수강생의 과목별 회차 점수 수정");
+            System.out.println("3. 수강생의 특정 과목 회차별 등급 조회");
+            System.out.println("4. 이전 메뉴로 돌아가기");
+            System.out.print("관리 메뉴를 선택하세요 : ");
+            int input = sc.nextInt();
+
+            switch (input) {
+                case 1 -> createScore();
+                case 2 -> fixScore();
+                case 3 -> displayGradeView();
+                case 4 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
+                default -> {
+                    System.out.println("잘못된 입력입니다.");
+                }
+            }
+        }
     }
+
+
+    private static void createScore(){
+        System.out.println("\n==================================");
+        System.out.println("조회할 학생의 등록코드를 입력해주세요 : ");
+        String studentId = sc.next(); // ST1 -- ST2 같은 형식임
+
+        // 학생의 고유 코드로 등록되어 있는 과목을 찾는다.
+        Student student = studentList.get(studentId);
+        if(student == null){
+            System.out.println("해당 학생이 존재하지 않습니다.");
+            // 오류 반환
+        }
+        // 학생이 수강하는 과목 출력
+        System.out.println(student.getStudentName() + "이 수강하는 과목입니다.");
+        for(String subject : student.getSubjects()){ // SU1, SU2 이런식으로 출력됩니다.
+            System.out.print(subject + " ");
+        }
+
+        System.out.println("\n==================================");
+        System.out.println("등록할 과목을 선택해주세요.");
+        String subjectId = sc.next();
+        // 입력한 과목이 유효한지 확인
+        boolean foundSubject = false;
+        for (Subject subject : subjectList) {
+            if (subject.getSubjectId().equals(subjectId)) {
+                foundSubject = true;
+                break;
+            }
+        }
+
+        if(!foundSubject){
+            System.out.println("해당 과목은 등록되어 있지 않습니다.");
+        }
+
+        // 우선적인 회차와 스코어 등록
+        System.out.println("등록하실 회차를 입력해주세요 : ");
+        int round = sc.nextInt();
+        System.out.println("등록하실 점수를 입력해주세요 : ");
+        int scores = sc.nextInt();
+
+        // 점수 등록
+        scoreList.add(new Score(sequence("SCORE"),
+                subjectId, studentId, round, scores));
+
+        // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
+
+
+    }
+
+    private static void fixScore(){
+        System.out.println("\n==================================");
+        System.out.print("수정할 과목을 입력해주세요 :  ");
+        String subjectName = sc.next();
+        Student student = studentList.get(subjectName);
+
+
+    }
+
+
+
+    private static void displayGradeView() {
+        // 학생 ID와 과목 ID를 입력 받음.
+        System.out.print("학생 ID를 입력하세요: ");
+        String studentId = sc.next();
+        System.out.print("과목 ID를 입력하세요: ");
+        String subjectId = sc.next();
+
+        // 해당 과목과 학생의 모든 회차에 대해 반복.
+        System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 점수:");
+        boolean foundScore = false;
+        for (int round = 1; ; round++) {
+            // 현재 회차의 점수를 찾음.
+            Score score = findGrade(subjectId, studentId, round);
+            if (score == null) {
+                break; // 해당 회차의 점수가 없으면 반복문 종료
+            }
+
+            // 현재 회차의 점수 출력
+            System.out.println(round +"회차 : " + score.getScore());
+            foundScore = true;
+        }
+        if (!foundScore) {
+            System.out.println("해당 학생과 과목의 점수가 없습니다.");
+        }
+    }
+
+    private static Score findGrade(String subjectId, String studentId, int round) {
+        for (Score score : scoreList) {
+            if (score.getSubjectId().equals(subjectId) && score.getStudentId().equals(studentId) && score.getRound() == round) {
+                return score; // 해당 과목, 학생, 회차에 해당하는 점수를 찾으면 반환.
+            }
+        }
+        // 해당 과목, 학생, 회차에 해당하는 점수가 없으면 null을 반환.
+        return null;
+    }
+
+
 
     private static void createStudent() {
         System.out.println("\n==================================");
@@ -230,6 +343,8 @@ public class App {
         //studentList에 수강생 등록
         studentList.put(student.getStudentId(), student);
         System.out.println("\n" + name + " 수강생 등록 성공!");
+
+
     }
 
     private static void studentInquiry() {
@@ -244,6 +359,80 @@ public class App {
                 Student value = iterator.next();
                 System.out.print("[" + value.getStudentId() + "]-" + value.getStudentName() + " | ");
             }
+        }
+    }
+
+    //수강생 정보 수정 메소드
+    private static void modifyStudentInfo() {
+        System.out.println("\n==================================");
+        //학생 아이디 받기
+        System.out.print("상태를 관리할 수강생의 ID를 입력해 주세요 : ");
+        String studentId = sc.next();
+
+        if (!studentList.containsKey(studentId)) {
+            //studentList에 일치하는 studentID가 없을 경우
+            System.out.println("ID가 일치하는 수강생이 없습니다.");
+        } else {
+            boolean flag = true;
+            while (flag) {
+                System.out.println("\n==================================");
+                Student findStudent = studentList.get(studentId);
+                System.out.println(findStudent.getStudentName() + " 수강생 정보 변경하기");
+                System.out.println("0. 이전 메뉴로 돌아가기");
+                System.out.println("1. 이름 변경");
+                System.out.println("2. 상태 변경");
+                System.out.print("번호 입력 : ");
+                int input = sc.nextInt();
+
+                switch (input) {
+                    case 0 -> flag = false;
+                    case 1 -> modifyStudentName(findStudent);
+                    case 2 -> modifyStudentStatus(findStudent);
+                    default -> {
+                        System.out.println("잘못된 입력입니다.");
+                    }
+                }
+            }
+        }
+    }
+
+    //수강생 이름 수정
+    private static void modifyStudentName(Student student) {
+        System.out.print("변경할 이름을 입력하세요 : ");
+        String inputName = sc.next();
+
+        //수강생 이름 수정
+        student.setStudentName(inputName);
+
+        //수정한 이름을 가진 student 객체 다시 studentList에 저장
+        studentList.put(student.getStudentId(), student);
+        System.out.println("수강생의 이름이 " + inputName + "(으)로 변경이 완료되었습니다!");
+    }
+
+    //수강생 상태 수정
+    private static void modifyStudentStatus(Student student) {
+        //Status List 생성
+        Status[] statusList = Status.values();
+
+        System.out.println("현재 " + student.getStudentName() + " 수강생의 상태 : " + student.getStatus());
+        System.out.println("어떤 상태로 수정하시겠습니까?");
+
+        for (Status status : statusList) {
+            System.out.println(status.ordinal() + ". " + status.name());
+        }
+
+        System.out.print("상태 선택 : ");
+        int inputNum = sc.nextInt();
+
+        if (inputNum > statusList.length - 1 || inputNum < 0) {
+            System.out.println("유효하지 않은 값입니다.");
+        } else {
+            //수강생 상태 수정
+            student.setStatus(statusList[inputNum]);
+
+            //수정한 상태를 가진 student 객체 다시 studentList에 저장
+            studentList.put(student.getStudentId(), student);
+            System.out.println("상태가 변경되었습니다!");
         }
     }
 

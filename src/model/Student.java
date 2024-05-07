@@ -1,21 +1,19 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Student {
     private String studentId;
     private String studentName;
-    private Map<Subject, Map<Integer, Score>> scores;
+    private List<String> subjects;
+    private Status status;
 
     public Student(String studentId, String studentName) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.subjects = new ArrayList<>();
-    }
-
-    public Map<Subject, Map<Integer, Score>> getScores() {
-        return scores;
+        this.status = Status.GREEN;         //수강생 상태 기본값 = GREEN
     }
 
     public String getStudentId() {
@@ -26,12 +24,24 @@ public class Student {
         return studentName;
     }
 
-    public void setSubject(Subject subject) {
-        scores.put(subject, new HashMap<>());
+    public String getStatus() {
+        return status.name();
     }
 
-    // 과목 입력 시 학생의 지금 까지 받았던 회차와 점수를 가져오는 메서드
-    public void setSubjectScore(Subject subject){
-        // 회차 , 점수라는 값이 필요
+    public List<String> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubject(String subjectId) {
+        //수강과목 리스트에 선택한 과목 ID 값 추가
+        subjects.add(subjectId);
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 }
