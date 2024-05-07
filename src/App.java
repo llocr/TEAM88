@@ -152,13 +152,6 @@ public class App {
 
     //점수 관리 뷰
     private static void displayScoreView() {
-        /*
-        1. 수강생의 과목별 시험 회차 및 점수 등록
-        2. 수강생의 과목별 회차 점수 수정
-        -JB-
-        3. 수강생의 특정 과목 회차별 등급 조회
-        4. 메인 화면 이동
-         */
 
         boolean flag = true;
         while (flag) {
@@ -174,8 +167,8 @@ public class App {
             switch (input) {
                 case 1 -> createScore();
                 case 2 -> fixScore();
-//                case 3 -> searchGrade();
-                case 3 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
+                case 3 -> displayGradeView();
+                case 4 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -256,6 +249,34 @@ public class App {
 
     }
 
+private static void displayGradeView() {
+    System.out.print("학생 ID를 입력하세요: ");
+    String studentId = sc.next();
+    System.out.print("과목 ID를 입력하세요: ");
+    String subjectId = sc.next();
+
+    System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:");
+
+    // 모든 회차를 반복하고 학점을 표시
+    for (int round = 1; ; round++) {
+        Grade grade = findGrade(subjectId, studentId, round);
+        if (grade == Grade.N) {
+            break; // 해당 회차의 학점이 없으면 중지
+        }
+        System.out.println(round + "회차 : " + grade);
+    }
+}
+
+    private static Grade findGrade(String subjectId, String studentId, int round) {
+        for (Score score : scoreList) {
+            if (score.getSubjectId().equals(subjectId) && score.getStudentId().equals(studentId) && score.getRound() == round) {
+                // 저장된 학점을 가져옴
+                return score.getGrade();
+            }
+        }
+        // 해당 회차에 대한 학점이 없을 경우 기본값으로 N을 반환
+        return Grade.N;
+    }
 
     private static void createStudent() {
         System.out.println("\n==================================");

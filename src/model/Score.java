@@ -22,7 +22,6 @@ public class Score {
         this.score = score;
     }
 
-
     public Grade calculateGrade(int score, SubjectType type) {
         int[] thresholds;
         Grade[] grades;
@@ -43,5 +42,25 @@ public class Score {
         }
         grade = Grade.N;
         return grade; // Default, should not happen
+    }
+
+    // 학점을 반환하는 메서드
+    public Grade getGrade() {
+        return this.grade;
+    }
+
+    // 과목 ID(subjectId)의 Getter
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    // 학생 ID(studentId)의 Getter
+    public String getStudentId() {
+        return studentId;
+    }
+
+    // 회차(round)의 Getter
+    public int getRound() {
+        return round;
     }
 }
