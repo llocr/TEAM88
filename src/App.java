@@ -1,7 +1,4 @@
-import model.Score;
-import model.Student;
-import model.Subject;
-import model.SubjectType;
+import model.*;
 
 import java.util.*;
 
@@ -134,16 +131,18 @@ public class App {
         while (flag) {
             System.out.println("\n==================================");
             System.out.println("수강생 관리 페이지");
+            System.out.println("0. 이전 메뉴로 돌아가기");
             System.out.println("1. 수강생 등록하기");
             System.out.println("2. 수강생 전체 목록 조회");
-            System.out.println("3. 이전 메뉴로 돌아가기");
+            System.out.println("3. 수강생 정보 수정하기");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
             switch (input) {
+                case 0 -> flag = false;
                 case 1 -> createStudent();
                 case 2 -> studentInquiry();
-                case 3 -> flag = false;
+                case 3 -> modifyStudentInfo();
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -244,6 +243,80 @@ public class App {
                 Student value = iterator.next();
                 System.out.print("[" + value.getStudentId() + "]-" + value.getStudentName() + " | ");
             }
+        }
+    }
+
+    //수강생 정보 수정 메소드
+    private static void modifyStudentInfo() {
+        System.out.println("\n==================================");
+        //학생 아이디 받기
+        System.out.print("상태를 관리할 수강생의 ID를 입력해 주세요 : ");
+        String studentId = sc.next();
+
+        if (!studentList.containsKey(studentId)) {
+            //studentList에 일치하는 studentID가 없을 경우
+            System.out.println("ID가 일치하는 수강생이 없습니다.");
+        } else {
+            boolean flag = true;
+            while (flag) {
+                System.out.println("\n==================================");
+                Student findStudent = studentList.get(studentId);
+                System.out.println(findStudent.getStudentName() + " 수강생 정보 변경하기");
+                System.out.println("0. 이전 메뉴로 돌아가기");
+                System.out.println("1. 이름 변경");
+                System.out.println("2. 상태 변경");
+                System.out.print("번호 입력 : ");
+                int input = sc.nextInt();
+
+                switch (input) {
+                    case 0 -> flag = false;
+                    case 1 -> modifyStudentName(findStudent);
+                    case 2 -> modifyStudentStatus(findStudent);
+                    default -> {
+                        System.out.println("잘못된 입력입니다.");
+                    }
+                }
+            }
+        }
+    }
+
+    //수강생 이름 수정
+    private static void modifyStudentName(Student student) {
+        System.out.print("변경할 이름을 입력하세요 : ");
+        String inputName = sc.next();
+
+        //수강생 이름 수정
+        student.setStudentName(inputName);
+
+        //수정한 이름을 가진 student 객체 다시 studentList에 저장
+        studentList.put(student.getStudentId(), student);
+        System.out.println("수강생의 이름이 " + inputName + "(으)로 변경이 완료되었습니다!");
+    }
+
+    //수강생 상태 수정
+    private static void modifyStudentStatus(Student student) {
+        //Status List 생성
+        Status[] statusList = Status.values();
+
+        System.out.println("현재 " + student.getStudentName() + " 수강생의 상태 : " + student.getStatus());
+        System.out.println("어떤 상태로 수정하시겠습니까?");
+
+        for (Status status : statusList) {
+            System.out.println(status.ordinal() + ". " + status.name());
+        }
+
+        System.out.print("상태 선택 : ");
+        int inputNum = sc.nextInt();
+
+        if (inputNum > statusList.length - 1 || inputNum < 0) {
+            System.out.println("유효하지 않은 값입니다.");
+        } else {
+            //수강생 상태 수정
+            student.setStatus(statusList[inputNum]);
+
+            //수정한 상태를 가진 student 객체 다시 studentList에 저장
+            studentList.put(student.getStudentId(), student);
+            System.out.println("상태가 변경되었습니다!");
         }
     }
 
