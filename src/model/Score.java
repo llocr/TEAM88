@@ -30,9 +30,15 @@ public class Score {
         this.score = score;
         return score;
     }
+
     public String getSubjectId() {
         return subjectId;
     }
+
+    public String getStudentId() {
+        return subjectId;
+    }
+
     public int getRound() {
         return round;
     }
@@ -40,6 +46,7 @@ public class Score {
     public boolean matches(String studentId, String subjectId, int round) {
         return this.studentId.equals(studentId) && this.subjectId.equals(subjectId) && this.round == round;
     }
+
     public static HashMap<String, List<Score>> scoreMap = new HashMap<>();
 
     private static Score findScore(String studentId, String subjectId, int round) {

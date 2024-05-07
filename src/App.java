@@ -5,9 +5,6 @@ import model.SubjectType;
 
 import java.util.*;
 
-import static model.Score.scoreMap;
-
-
 public class App {
     //스캐너
     private static Scanner sc = new Scanner(System.in);
@@ -29,61 +26,65 @@ public class App {
     //메인 실행
     public static void main(String[] args) {
         setInitData();
-        displayMainView();
-
-    }
-    //초기 데이터 생성
-     private static void setInitData() {
-            studentList = new HashMap<>();
-            scoreList = new ArrayList<>();
-            subjectList = List.of(
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "Java",
-                            SubjectType.MANDATORY
-                    ),
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "객체지향",
-                            SubjectType.MANDATORY
-                    ),
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "Spring",
-                            SubjectType.MANDATORY
-                    ),
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "JPA",
-                            SubjectType.MANDATORY
-                    ),
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "MySQL",
-                            SubjectType.MANDATORY
-                    ),
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "디자인 패턴",
-                            SubjectType.MANDATORY
-                    ),
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "Spring Security",
-                            SubjectType.CHOICE
-                    ),
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "Redis",
-                            SubjectType.CHOICE
-                    ),
-                    new Subject(
-                            sequence(INDEX_TYPE_SUBJECT),
-                            "MongoDB",
-                            SubjectType.CHOICE
-                    )
-            );
+        try {
+            displayMainView();
+        } catch (Exception e) {
+            System.out.println("오류가 발생했습니다. 프로그램을 종료합니다.");
         }
+    }
+
+    //초기 데이터 생성
+    private static void setInitData() {
+        studentList = new HashMap<>();
+        scoreList = new ArrayList<>();
+        subjectList = List.of(
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "Java",
+                        SubjectType.MANDATORY
+                ),
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "객체지향",
+                        SubjectType.MANDATORY
+                ),
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "Spring",
+                        SubjectType.MANDATORY
+                ),
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "JPA",
+                        SubjectType.MANDATORY
+                ),
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "MySQL",
+                        SubjectType.MANDATORY
+                ),
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "디자인 패턴",
+                        SubjectType.MANDATORY
+                ),
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "Spring Security",
+                        SubjectType.CHOICE
+                ),
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "Redis",
+                        SubjectType.CHOICE
+                ),
+                new Subject(
+                        sequence(INDEX_TYPE_SUBJECT),
+                        "MongoDB",
+                        SubjectType.CHOICE
+                )
+        );
+    }
 
 
     // index 자동 증가
@@ -133,7 +134,7 @@ public class App {
         boolean flag = true;
         while (flag) {
             System.out.println("\n==================================");
-            System.out.println("수강생 관리 페이지");
+            System.out.println("0. 수강생 관리 페이지");
             System.out.println("1. 수강생 등록하기");
             System.out.println("2. 수강생 전체 목록 조회");
             System.out.println("3. 이전 메뉴로 돌아가기");
@@ -194,13 +195,13 @@ public class App {
         System.out.println("\n=== 수강할 과목을 선택해 주세요 ===");
         System.out.println("0. 수강 과목 선택 종료하기");
         //subjectList에 저장된 과목들 출력
-        for (int i = 1; i<subjectList.size(); i++) {
+        for (int i = 1; i < subjectList.size(); i++) {
             System.out.println(i + ". " + subjectList.get(i).getSubjectName()
                     + ", (" + subjectList.get(i).getSubjectType().getValue() + ")");
         }
 
         boolean flag = true;
-        boolean[] checkSubject = new boolean[subjectList.size()+1]; //중복 확인 배열
+        boolean[] checkSubject = new boolean[subjectList.size() + 1]; //중복 확인 배열
         int mandatory = 0;      //필수과목
         int choice = 0;         //선택과목
 
@@ -208,18 +209,19 @@ public class App {
             System.out.print("\n과목 번호 입력 : ");
             int inputNum = sc.nextInt();
 
-            if(inputNum > 0 && inputNum <= subjectList.size()) {
+            if (inputNum > 0 && inputNum <= subjectList.size()) {
                 //이미 선택된 과목인지 확인하기
-                if(!checkSubject[inputNum]) {
+                if (!checkSubject[inputNum]) {
                     Subject selectedSubject = subjectList.get(inputNum - 1);
-                    student.setSubject(selectedSubject);
+
+                    student.setSubject(selectedSubject.getSubjectId());
                     System.out.println(selectedSubject.getSubjectName() + " 과목이 추가되었습니다.");
 
                     //선택한 과목 체크하기
                     checkSubject[inputNum] = true;
 
                     //필수과목인지 선택과목인지 확인하고, 값 올려주기
-                    if(selectedSubject.getSubjectType().equals(SubjectType.MANDATORY)) mandatory++;
+                    if (selectedSubject.getSubjectType().equals(SubjectType.MANDATORY)) mandatory++;
                     else choice++;
 
                     System.out.println("\n현재 선택된 과목 갯수입니다.");
@@ -232,7 +234,7 @@ public class App {
 
             } else if (inputNum == 0) {
                 //프로그램 종료 원하면, 필수과목과 선택과목 최소 개수가 채워졌는지 확인
-                if(mandatory >= 3 && choice >= 2) {
+                if (mandatory >= 3 && choice >= 2) {
                     flag = false;
                 } else {
                     System.out.println("수강할 과목 개수가 부족합니다. 더 선택해 주세요.");
@@ -250,8 +252,9 @@ public class App {
         studentList.put(student.getStudentId(), student);
         System.out.println("\n" + name + " 수강생 등록 성공!");
     }
+
     private static void studentInquiry() {
-        if(studentList.isEmpty()){
+        if (studentList.isEmpty()) {
             System.out.println("\n==================================");
             System.out.print("등록된 수강생이 없습니다! ");
         } else {
@@ -277,25 +280,40 @@ public class App {
             return;
         }
         System.out.println("학생 정보 : " + student.getStudentName() + " - " + student.getStudentId());
-        List<Score> scores = scoreMap.get(studentId);
-        displayScores(scores);
 
+        // 점수 정보 가져오기
+        List<Score> scores = findScoresByStudentId(studentId);
+        if (scores.isEmpty()) {
+            System.out.println("등록된 점수 정보가 없습니다.");
+            return;
+        }
+
+        displayScores(scores);
 
         System.out.print("수정할 점수의 과목 ID를 입력해 주세요: ");
         String subjectId = sc.next();
         System.out.print("회차를 입력해 주세요: ");
         int round = sc.nextInt();
 
-        // 해당 점수 찾기
         if (!updateStudentScore(scores, subjectId, round)) {
-            System.out.println("점수 정보를 찾을 수 없습니다.");
+            System.out.println("해당 과목의 점수 정보를 찾을 수 없습니다.");
         }
+    }
+
+    private static List<Score> findScoresByStudentId(String studentId) {
+        List<Score> scores = new ArrayList<>();
+        for (Score score : scoreList) {
+            if (score.getStudentId().equals(studentId)) {
+                scores.add(score);
+            }
+        }
+        return scores;
     }
 
     private static boolean updateStudentScore(List<Score> scores, String subjectId, int round) {
         for (Score score : scores) {
             if (score.getSubjectId().equals(subjectId) && score.getRound() == round) {
-                System.out.printf("현재 점수: " + score.getScore() + "\n");
+                System.out.printf("현재 점수: %d\n", score.getScore());
                 System.out.print("새로운 점수를 입력해 주세요: ");
                 int newScore = sc.nextInt();
                 score.setScore(newScore);
@@ -307,10 +325,8 @@ public class App {
     }
 
     private static void displayScores(List<Score> scores) {
-        Iterator<Score> scoreIterator = scores.iterator();
-        while (scoreIterator.hasNext()) {
-            Score score = scoreIterator.next();
-            System.out.printf("과목 ID: %s\n회차: %d\n점수: %d\n", score.getSubjectId(), score.getRound(), score.getScore());
+        for (Score score : scores) {
+            System.out.printf("과목 ID: %s, 회차: %d, 점수: %d\n", score.getSubjectId(), score.getRound(), score.getScore());
         }
     }
 
