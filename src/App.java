@@ -267,25 +267,19 @@ public class App {
 
     private static void updateScore() {
         System.out.println("\n==================================");
-        System.out.print("수정할 점수의 수강생 이름을 입력해 주세요: ");
-        String studentName = sc.next();
+        System.out.print("수정할 점수의 수강생ID를 입력해 주세요: ");
+        String studentId = sc.next();
 
         // 학생 정보 출력
-        String studentId = findStudentIdByName(studentName);
-        if (studentId == null) {
+        Student student = studentList.get(studentId);
+        if (student == null) {
             System.out.println("학생 정보를 찾을 수 없습니다.");
             return;
         }
-        Student student = studentList.get(studentId);
         System.out.println("학생 정보 : " + student.getStudentName() + " - " + student.getStudentId());
-
-        // 점수 정보 가져오기
         List<Score> scores = scoreMap.get(studentId);
-        if (scores == null) {
-            System.out.println("등록된 점수 정보가 없습니다.");
-            return;
-        }
         displayScores(scores);
+
 
         System.out.print("수정할 점수의 과목 ID를 입력해 주세요: ");
         String subjectId = sc.next();
@@ -294,7 +288,7 @@ public class App {
 
         // 해당 점수 찾기
         if (!updateStudentScore(scores, subjectId, round)) {
-            System.out.println("해당 과목의 점수 정보를 찾을 수 없습니다.");
+            System.out.println("점수 정보를 찾을 수 없습니다.");
         }
     }
 
@@ -320,12 +314,5 @@ public class App {
         }
     }
 
-    private static String findStudentIdByName(String name) {
-        for (Map.Entry<String, Student> entry : studentList.entrySet()) {
-            if (entry.getValue().getStudentName().equalsIgnoreCase(name)) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
+
 }
