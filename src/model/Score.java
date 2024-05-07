@@ -78,7 +78,6 @@ public class Score {
     }
 
 
-    public static HashMap<String, List<Score>> scoreMap = new HashMap<>();
 
 
 

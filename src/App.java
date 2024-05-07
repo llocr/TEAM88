@@ -192,9 +192,9 @@ public class App {
         // 학생이 수강하는 과목 출력
         System.out.println(student.getStudentName() + "이 수강하는 과목입니다.");
         for (String subjecId : student.getSubjects()) {
-            for(Subject subject : subjectList) {
-                if(subject.getSubjectId().equals(subjecId)) {
-                    System.out.println(subject.getSubjectId()+ " - " + subject.getSubjectName());
+            for (Subject subject : subjectList) {
+                if (subject.getSubjectId().equals(subjecId)) {
+                    System.out.println(subject.getSubjectId() + " - " + subject.getSubjectName());
                     break;
                 }
             }
@@ -233,32 +233,31 @@ public class App {
 
         System.out.println("학생 : " + student.getStudentName());
 
-        System.out.println("과목명 : "+ sbName + "에 " + round+ "회차 " + scores +"(" +
-                        scoreList.get(round-1).calculateGrade(scores, type) + ")" +"을 등록했습니다.");
+        System.out.println("과목명 : " + sbName + "에 " + round + "회차 " + scores + "(" +
+                scoreList.get(round - 1).calculateGrade(scores, type) + ")" + "을 등록했습니다.");
         // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
 
 
     }
 
 
+    private static void displayGradeView() {
+        System.out.print("학생 ID를 입력하세요: ");
+        String studentId = sc.next();
+        System.out.print("과목 ID를 입력하세요: ");
+        String subjectId = sc.next();
 
-private static void displayGradeView() {
-    System.out.print("학생 ID를 입력하세요: ");
-    String studentId = sc.next();
-    System.out.print("과목 ID를 입력하세요: ");
-    String subjectId = sc.next();
+        System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:");
 
-    System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:");
-
-    // 모든 회차를 반복하고 학점을 표시
-    for (int round = 1; ; round++) {
-        Grade grade = findGrade(subjectId, studentId, round);
-        if (grade == Grade.N) {
-            break; // 해당 회차의 학점이 없으면 중지
+        // 모든 회차를 반복하고 학점을 표시
+        for (int round = 1; ; round++) {
+            Grade grade = findGrade(subjectId, studentId, round);
+            if (grade == Grade.N) {
+                break; // 해당 회차의 학점이 없으면 중지
+            }
+            System.out.println(round + "회차 : " + grade);
         }
-        System.out.println(round + "회차 : " + grade);
     }
-}
 
     private static Grade findGrade(String subjectId, String studentId, int round) {
         for (Score score : scoreList) {
@@ -345,7 +344,7 @@ private static void displayGradeView() {
     }
 
     private static void studentInquiry() {
-        if(studentList.isEmpty()){
+        if (studentList.isEmpty()) {
             System.out.println("\n==================================");
             System.out.print("등록된 수강생이 없습니다! ");
         } else {
