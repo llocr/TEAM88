@@ -8,40 +8,16 @@ public class Score {
     private int score;
     private Grade grade;
 
-    private static final int[] mandatoryThresholds = {95, 90, 80, 70, 60, 0};
-    private static final Grade[] mandatoryGrades = {Grade.A, Grade.B, Grade.C, Grade.D, Grade.F, Grade.N};
-
-    private static final int[] choiceThresholds = {90, 80, 70, 60, 50, 0};
-    private static final Grade[] choiceGrades = {Grade.A, Grade.B, Grade.C, Grade.D, Grade.F, Grade.N};
-
-    public Score(String scoreId, String subjectId, String studentId, int round, int score) {
+    public Score(String scoreId, String subjectId, String studentId, int round, int score, SubjectType type) {
         this.scoreId = scoreId;
         this.subjectId = subjectId;
         this.studentId = studentId;
         this.round = round;
         this.score = score;
+        this.grade = gradeCalculator.calculateGrade(score, type);
     }
 
-
-    public Grade calculateGrade(int score, SubjectType type) {
-        int[] thresholds;
-        Grade[] grades;
-
-        if (type == SubjectType.MANDATORY) {
-            thresholds = mandatoryThresholds;
-            grades = mandatoryGrades;
-        } else {
-            thresholds = choiceThresholds;
-            grades = choiceGrades;
-        }
-
-        for (int i = 0; i < thresholds.length; i++) {
-            if (score >= thresholds[i]) {
-                grade = grades[i];
-                return grade;
-            }
-        }
-        grade = Grade.N;
-        return grade; // Default, should not happen
+    public Grade getGrade() {
+        return grade;
     }
 }

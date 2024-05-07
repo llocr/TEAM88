@@ -234,14 +234,15 @@ public class App {
 
         // 점수 등록
         scoreList.add(new Score(sequence(INDEX_TYPE_SCORE),
-                subjectId, studentId, round, scores));
+                subjectId, studentId, round, scores, type));
         // 등록한 과목, 회차, 점수(등급)을 출력
 
 
         System.out.println("학생 : " + student.getStudentName());
 
+        // feedback : 점수 등록 부와 등급 결정 부의 분리
         System.out.println("과목명 : "+ sbName + "에 " + round+ "회차 " + scores +"(" +
-                        scoreList.get(round-1).calculateGrade(scores, type) + ")" +"을 등록했습니다.");
+                        scoreList.get(round-1).getGrade() + ")" +"을 등록했습니다.");
         // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
 
 
