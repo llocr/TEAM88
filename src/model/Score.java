@@ -26,13 +26,13 @@ public class Score {
         return score;
     }
 
-public int setScore(int score) {
+    public int setScore(int score) {
         this.score = score;
         return score;
-}
-public String getSubjectId() {
+    }
+    public String getSubjectId() {
         return subjectId;
-}
+    }
     public int getRound() {
         return round;
     }
