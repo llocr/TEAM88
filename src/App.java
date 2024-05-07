@@ -37,7 +37,8 @@ public class App {
 
     //초기 데이터 생성
     private static void setInitData() {
-        studentList = new HashMap<>(); // 규모가 커질 수 록 부하가 걸려 map이 좋다.
+        studentList = new HashMap<>();
+        scoreList = new ArrayList<>();
         subjectList = List.of(
                 new Subject(
                         sequence(INDEX_TYPE_SUBJECT),
@@ -142,6 +143,7 @@ public class App {
             int input = sc.nextInt();
 
             switch (input) {
+                case 0 -> flag = false;
                 case 1 -> createStudent();
                 case 2 -> studentInquiry();
                 case 3 -> modifyStudentInfo();

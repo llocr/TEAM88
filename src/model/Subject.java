@@ -5,8 +5,6 @@ public class Subject {
     private String subjectName;
     private SubjectType subjectType;
 
-
-
     public Subject(String subjectId, String subjectName, SubjectType subjectType) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
