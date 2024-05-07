@@ -24,12 +24,8 @@ public class Student {
         return studentName;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public List<String> getSubjects() {
-        return subjects;
+    public String getStatus() {
+        return status.name();
     }
 
     public void setSubject(String subjectId) {
@@ -44,4 +40,10 @@ public class Student {
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
+
+    public List<String> getSubjects() {
+        return subjects;
+    }
 }
+
+
