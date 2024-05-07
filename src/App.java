@@ -183,20 +183,20 @@ public class App {
     }
 
 
-    private static void createScore(){
+    private static void createScore() {
         System.out.println("\n==================================");
         System.out.println("조회할 학생의 등록코드를 입력해주세요 : ");
         String studentId = sc.next(); // ST1 -- ST2 같은 형식임
 
         // 학생의 고유 코드로 등록되어 있는 과목을 찾는다.
         Student student = studentList.get(studentId);
-        if(student == null){
+        if (student == null) {
             System.out.println("해당 학생이 존재하지 않습니다.");
             // 오류 반환
         }
         // 학생이 수강하는 과목 출력
         System.out.println(student.getStudentName() + "이 수강하는 과목입니다.");
-        for(String subject : student.getSubjects()){ // SU1, SU2 이런식으로 출력됩니다.
+        for (String subject : student.getSubjects()) { // SU1, SU2 이런식으로 출력됩니다.
             System.out.print(subject + " ");
         }
 
@@ -212,7 +212,7 @@ public class App {
             }
         }
 
-        if(!foundSubject){
+        if (!foundSubject) {
             System.out.println("해당 과목은 등록되어 있지 않습니다.");
         }
 
@@ -233,8 +233,6 @@ public class App {
 
 
     }
-
-
 
 
     private static void createStudent() {
@@ -309,7 +307,7 @@ public class App {
     }
 
     private static void studentInquiry() {
-        if(studentList.isEmpty()){
+        if (studentList.isEmpty()) {
             System.out.println("\n==================================");
             System.out.print("등록된 수강생이 없습니다! ");
         } else {
@@ -396,6 +394,7 @@ public class App {
             System.out.println("상태가 변경되었습니다!");
         }
     }
+
     private static void updateScore() {
         System.out.print("\n수정할 점수의 수강생 ID를 입력해 주세요: ");
         String studentId = sc.next();
@@ -442,20 +441,6 @@ public class App {
         return scores;
     }
 
-
-    private static boolean updateStudentScore(List<Score> scores, String subjectId, int round) {
-        for (Score score : scores) {
-            if (score.getSubjectId().equals(subjectId) && score.getRound() == round) {
-                System.out.printf("현재 점수: %d\n", score.getScore());
-                System.out.print("새로운 점수를 입력해 주세요: ");
-                int newScore = sc.nextInt();
-                score.setScore(newScore);
-                System.out.println("점수가 수정되었습니다.");
-                return true;
-            }
-        }
-        return false;
-    }
 
     private static void displayScores(List<Score> scores) {
         for (Score score : scores) {

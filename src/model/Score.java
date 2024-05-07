@@ -73,19 +73,7 @@ public class Score {
         return round;
     }
 
-    public boolean matches(String studentId, String subjectId, int round) {
-        return this.studentId.equals(studentId) && this.subjectId.equals(subjectId) && this.round == round;
-    }
 
     public static HashMap<String, List<Score>> scoreMap = new HashMap<>();
 
-    private static Score findScore(String studentId, String subjectId, int round) {
-        List<Score> scores = scoreMap.getOrDefault(studentId, new ArrayList<>());
-        for (Score score : scores) {
-            if (score.matches(studentId, subjectId, round)) {
-                return score;
-            }
-        }
-        return null; // 점수 정보가 없을 경우 null 반환
-    }
 }
