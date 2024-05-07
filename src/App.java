@@ -246,7 +246,7 @@ public class App {
         String studentId = sc.next();
         System.out.print("과목 ID를 입력하세요: ");
         String subjectId = sc.next();
-
+        // 임의의 값이며, 수정해주세요!
         System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:" + GradeCalculator.calculateGrade(60,SubjectType.MANDATORY));
 
         // 모든 회차를 반복하고 학점을 표시
