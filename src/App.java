@@ -232,16 +232,41 @@ public class App {
     }
 
     private static void studentInquiry() {
-        if(studentList.isEmpty()){
+        if (studentList.isEmpty()) {
             System.out.println("\n==================================");
-            System.out.print("등록된 수강생이 없습니다! ");
+            System.out.println("등록된 수강생이 없습니다!");
         } else {
-            //Iterator 로 studentList 값 조회
-            Iterator<Student> iterator = studentList.values().iterator();
-            //studentList hashNext 로 다음 값이 없을 때까지 반복!
+            System.out.println("\n==================================");
+            System.out.println("등록된 수강생 목록:");
+
+            Iterator<Map.Entry<String, Student>> iterator = studentList.entrySet().iterator();
             while (iterator.hasNext()) {
-                Student value = iterator.next();
-                System.out.print("[" + value.getStudentId() + "]-" + value.getStudentName() + " | ");
+                Map.Entry<String, Student> entry = iterator.next();
+                Student student = entry.getValue();
+                System.out.print("[" + student.getStudentId() + "]-" + student.getStudentName() +
+                        " ,[STATUS]-" + student.getStatus());
+
+                // 선택한 과목 출력
+                List<String> subjects = student.getSubjects();
+                if (!subjects.isEmpty()) {
+                    System.out.print(" ,[SUBJECTS]-");
+                    for (int i = 0; i < subjects.size(); i++) {
+                        String subjectId = subjects.get(i);
+                        // subjectList에서 해당 과목 ID에 해당하는 과목을 찾아서 출력
+                        for (Subject subject : subjectList) {
+                            if (subject.getSubjectId().equals(subjectId)) {
+                                System.out.print(subject.getSubjectName());
+                                if (i < subjects.size() - 1) {
+                                    System.out.print(", ");
+                                } else {
+                                    System.out.print("");
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                System.out.println();
             }
         }
     }
