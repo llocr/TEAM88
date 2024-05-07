@@ -156,13 +156,6 @@ public class App {
 
     //점수 관리 뷰
     private static void displayScoreView() {
-        /*
-        1. 수강생의 과목별 시험 회차 및 점수 등록
-        2. 수강생의 과목별 회차 점수 수정
-        -JB-
-        3. 수강생의 특정 과목 회차별 등급 조회
-        4. 메인 화면 이동
-         */
 
         boolean flag = true;
         while (flag) {
@@ -178,7 +171,7 @@ public class App {
             switch (input) {
                 case 1 -> createScore();
                 case 2 -> fixScore();
-               case 3 ->  displayGradeView();
+                case 3 ->  displayGradeView();
                 case 4 -> flag = false; // 이전 메뉴로 돌아가기
                 default -> {
                     System.out.println("잘못된 입력입니다.");
