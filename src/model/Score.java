@@ -1,5 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Score {
     private String scoreId;
     private String subjectId;
@@ -20,6 +24,12 @@ public class Score {
         this.studentId = studentId;
         this.round = round;
         this.score = score;
+    }
+
+
+    // score 점수를 반환
+    public int getScore() {
+        return score;
     }
 
     public Grade calculateGrade(int score, SubjectType type) {
@@ -49,18 +59,31 @@ public class Score {
         return this.grade;
     }
 
-    // 과목 ID(subjectId)의 Getter
+
+    public int setScore(int score) {
+        this.score = score;
+        return score;
+    }
+
     public String getSubjectId() {
         return subjectId;
     }
 
-    // 학생 ID(studentId)의 Getter
     public String getStudentId() {
         return studentId;
     }
 
-    // 회차(round)의 Getter
     public int getRound() {
         return round;
     }
+
+
+
+
+
+
+
+
+
+
 }
