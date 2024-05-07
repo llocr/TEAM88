@@ -152,6 +152,13 @@ public class App {
 
     //점수 관리 뷰
     private static void displayScoreView() {
+        /*
+        1. 수강생의 과목별 시험 회차 및 점수 등록
+        2. 수강생의 과목별 회차 점수 수정
+        -JB-
+        3. 수강생의 특정 과목 회차별 등급 조회
+        4. 메인 화면 이동
+         */
 
         boolean flag = true;
         while (flag) {
@@ -167,8 +174,8 @@ public class App {
             switch (input) {
                 case 1 -> createScore();
                 case 2 -> fixScore();
-                case 3 -> displayGradeView();
-                case 4 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
+//                case 3 -> searchGrade();
+                case 3 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -188,10 +195,16 @@ public class App {
             System.out.println("해당 학생이 존재하지 않습니다.");
             // 오류 반환
         }
+
         // 학생이 수강하는 과목 출력
         System.out.println(student.getStudentName() + "이 수강하는 과목입니다.");
-        for(String subject : student.getSubjects()){ // SU1, SU2 이런식으로 출력됩니다.
-            System.out.print(subject + " ");
+        for(String subjecId : student.getSubjects()) {
+            for(Subject subject : subjectList) {
+                if(subject.getSubjectId().equals(subjecId)) {
+                    System.out.println(subject.getSubjectId()+ " - " + subject.getSubjectName());
+                    break;
+                }
+            }
         }
 
         System.out.println("\n==================================");
@@ -199,13 +212,16 @@ public class App {
         String subjectId = sc.next();
         // 입력한 과목이 유효한지 확인
         boolean foundSubject = false;
+        String sbName = "";
+        SubjectType type = SubjectType.MANDATORY;
         for (Subject subject : subjectList) {
             if (subject.getSubjectId().equals(subjectId)) {
+                type = subject.getSubjectType();
+                sbName = subject.getSubjectName();
                 foundSubject = true;
                 break;
             }
         }
-
         if(!foundSubject){
             System.out.println("해당 과목은 등록되어 있지 않습니다.");
         }
@@ -217,9 +233,15 @@ public class App {
         int scores = sc.nextInt();
 
         // 점수 등록
-        scoreList.add(new Score(sequence("SCORE"),
+        scoreList.add(new Score(sequence(INDEX_TYPE_SCORE),
                 subjectId, studentId, round, scores));
+        // 등록한 과목, 회차, 점수(등급)을 출력
 
+
+        System.out.println("학생 : " + student.getStudentName());
+
+        System.out.println("과목명 : "+ sbName + "에 " + round+ "회차 " + scores +"(" +
+                        scoreList.get(round-1).calculateGrade(scores, type) + ")" +"을 등록했습니다.");
         // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
 
 
@@ -233,45 +255,6 @@ public class App {
 
 
     }
-
-
-
-    private static void displayGradeView() {
-        // 학생 ID와 과목 ID를 입력 받음.
-        System.out.print("학생 ID를 입력하세요: ");
-        String studentId = sc.next();
-        System.out.print("과목 ID를 입력하세요: ");
-        String subjectId = sc.next();
-
-        // 해당 과목과 학생의 모든 회차에 대해 반복.
-        System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 점수:");
-        boolean foundScore = false;
-        for (int round = 1; ; round++) {
-            // 현재 회차의 점수를 찾음.
-            Score score = findGrade(subjectId, studentId, round);
-            if (score == null) {
-                break; // 해당 회차의 점수가 없으면 반복문 종료
-            }
-
-            // 현재 회차의 점수 출력
-            System.out.println(round +"회차 : " + score.getScore());
-            foundScore = true;
-        }
-        if (!foundScore) {
-            System.out.println("해당 학생과 과목의 점수가 없습니다.");
-        }
-    }
-
-    private static Score findGrade(String subjectId, String studentId, int round) {
-        for (Score score : scoreList) {
-            if (score.getSubjectId().equals(subjectId) && score.getStudentId().equals(studentId) && score.getRound() == round) {
-                return score; // 해당 과목, 학생, 회차에 해당하는 점수를 찾으면 반환.
-            }
-        }
-        // 해당 과목, 학생, 회차에 해당하는 점수가 없으면 null을 반환.
-        return null;
-    }
-
 
 
     private static void createStudent() {
