@@ -300,7 +300,7 @@ public class App {
         // 과목 리스트를 반복하면서 과목 ID와 일치하는 과목을 찾음
         for (Subject subject : subjectList) {
             if (subject.getSubjectId().equals(subjectId)) {
-               return subject.getSubjectName();  /* 과목 ID도 같이 출력 할려면 : subject.getSubjectId() 추가 */
+                return subject.getSubjectName();  /* 과목 ID도 같이 출력 할려면 : subject.getSubjectId() 추가 */
             }
         }
         // 일치하는 과목 ID가 없을 경우
@@ -602,21 +602,21 @@ public class App {
         for (Score score : scores) {
             if (score.getSubjectId().equals(subjectId) && score.getRound() == round) {
                 System.out.print("새로운 점수를 입력해 주세요: ");
-                while (true) {
+                while (!updated) {
                     int newScore = sc.nextInt();
                     if (0 <= newScore && newScore <= 100) {
-
                         score.setScoreAndGrade(newScore);
                         System.out.println("점수가 수정되었습니다.");
                         updated = true;
-                        break;
                     } else {
                         System.out.print("0에서 100 사이의 정수를 입력하세요: ");
                     }
                 }
+                if (updated) {
+                    break;
+                }
             }
         }
-
         if (!updated) {
             System.out.println("해당 과목의 점수 정보를 찾을 수 없습니다.");
         }
