@@ -44,4 +44,8 @@ public class Student {
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
+
+    public List<String> getSubjects() {
+        return subjects;
+    }
 }
