@@ -1,8 +1,3 @@
-/*import model.Score;
-import model.Student;
-import model.Subject;
-import model.SubjectType;*/
-
 import model.*;
 
 import java.util.*;
@@ -15,7 +10,6 @@ public class App {
     private static HashMap<String, Student> studentList;    //수강생 리스트
     private static List<Subject> subjectList;               //과목 리스트
     private static List<Score> scoreList;                   //점수 리스트
-
 
     //index 관리 필드
     private static int studentIndex;
@@ -123,8 +117,9 @@ public class App {
                 case 1 -> displayStudentView(); // 수강생 관리
                 case 2 -> displayScoreView(); // 점수 관리
                 case 3 -> flag = false; // 프로그램 종료
-                default -> System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
-
+                default -> {
+                    System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
+                }
             }
         }
         System.out.println("프로그램을 종료합니다.");
@@ -138,20 +133,16 @@ public class App {
             System.out.println("수강생 관리 페이지");
             System.out.println("0. 이전 메뉴로 돌아가기");
             System.out.println("1. 수강생 등록하기");
-            System.out.println("2. 수강생 아이디 검색");
-            System.out.println("3. 수강생 전체 목록 조회");
-            System.out.println("4. 수강생 정보 수정하기");
-            System.out.println("5. 수강생 상태별 목록 조회");
+            System.out.println("2. 수강생 전체 목록 조회");
+            System.out.println("3. 수강생 정보 수정하기");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
             switch (input) {
                 case 0 -> flag = false;
                 case 1 -> createStudent();
-                case 2 -> findStudentId();
-                case 3 -> studentInquiry();
-                case 4 -> modifyStudentInfo();
-                case 5 -> studentStatusInquiry();
+                case 2 -> studentInquiry();
+                case 3 -> modifyStudentInfo();
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -357,41 +348,6 @@ public class App {
             }
         }
     }
-
-    private static void displayGradeView() {
-        System.out.print("학생의 ID를 입력하세요: ");
-        String studentId = sc.next();
-
-        System.out.print("과목을 입력하세요 (Java, 객체지향, Spring, JPA, MySQL, 디자인 패턴, Spring Security, Redis, MongoDB): ");
-        String subjectName = sc.next();
-
-        // 학생을 검색합니다.
-        Student student = studentList.get(studentId);
-
-        // 학생이 존재하는지 확인합니다.
-        if (student == null) {
-            System.out.println("해당 학생을 찾을 수 없습니다.");
-            return;
-        }
-
-        // 주어진 과목의 점수를 검색합니다.
-//        Map<Integer, Score> scores = student.getScores().get(subjectName);
-
-        // 주어진 과목에 대한 점수가 있는지 확인합니다.
-//        if (scores == null || scores.isEmpty()) {
-//            System.out.println("해당 학생의 성적이 없습니다.");
-//            return;
-//        }
-//
-//        // 점수를 출력합니다.
-//        System.out.println("[" + subjectName + "] 성적 조회");
-//        for (Map.Entry<Integer, Score> entry : scores.entrySet()) {
-//            int round = entry.getKey();
-//            Score score = entry.getValue();
-//            System.out.println("회차: " + round + ", 성적: " + score.getScore());
-//        }
-    }
-
 
 
     private static void createStudent() {
@@ -613,6 +569,19 @@ public class App {
         }
     }
 
+    public static void deleteStudent() {
+        System.out.print("\n삭제할 수강생 ID를 입력해 주세요: ");
+        String studentId = sc.next();
+        if (studentList.containsKey(studentId)) {
+            studentList.remove(studentId);
+            scoreList.removeIf(score -> score.getStudentId().equals(studentId));
+            System.out.println("수강생 및 관련 점수가 삭제되었습니다.");
+        }
+        else {
+            System.out.println("존재하지 않는 수강생입니다.");
+        }
+    }
+
     private static void updateScore() {
         System.out.print("\n수정할 점수의 수강생 ID를 입력해 주세요: ");
         String studentId = sc.next();
@@ -629,28 +598,22 @@ public class App {
         System.out.print("회차를 입력해 주세요: ");
         int round = sc.nextInt();
 
-        // 과목의 SubjectType 찾기
-        SubjectType subjectType = SubjectType.MANDATORY;
-        for (Subject subject : subjectList) {
-            if (subject.getSubjectId().equals(subjectId)) {
-                subjectType = subject.getSubjectType();
-                break;
-            }
-        }
-
         boolean updated = false;
         for (Score score : scores) {
             if (score.getSubjectId().equals(subjectId) && score.getRound() == round) {
                 System.out.print("새로운 점수를 입력해 주세요: ");
-                int newScore = sc.nextInt();
+                while (true) {
+                    int newScore = sc.nextInt();
+                    if (0 <= newScore && newScore <= 100) {
 
-                Grade newGrade = GradeCalculator.calculateGrade(newScore, subjectType);
-
-                score.setGrade(newGrade);
-                score.setScore(newScore);
-                System.out.println("점수가 수정되었습니다.");
-                updated = true;
-                break;
+                        score.setScoreAndGrade(newScore);
+                        System.out.println("점수가 수정되었습니다.");
+                        updated = true;
+                        break;
+                    } else {
+                        System.out.print("0에서 100 사이의 정수를 입력하세요: ");
+                    }
+                }
             }
         }
 
