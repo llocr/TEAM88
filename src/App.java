@@ -133,18 +133,20 @@ public class App {
             System.out.println("수강생 관리 페이지");
             System.out.println("0. 이전 메뉴로 돌아가기");
             System.out.println("1. 수강생 등록하기");
-            System.out.println("2. 수강생 전체 목록 조회");
-            System.out.println("3. 수강생 정보 수정하기");
-            System.out.println("4. 수강생 상태별 목록 조회");
+            System.out.println("2. 수강생 아이디 검색");
+            System.out.println("3. 수강생 전체 목록 조회");
+            System.out.println("4. 수강생 정보 수정하기");
+            System.out.println("5. 수강생 상태별 목록 조회");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
             switch (input) {
                 case 0 -> flag = false;
                 case 1 -> createStudent();
-                case 2 -> studentInquiry();
-                case 3 -> modifyStudentInfo();
-                case 4 -> studentStatusInquiry();
+                case 2 -> findStudentId();
+                case 3 -> studentInquiry();
+                case 4 -> modifyStudentInfo();
+                case 5 -> studentStatusInquiry();
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -352,6 +354,27 @@ public class App {
 
 
     }
+
+    private static void findStudentId() {
+        System.out.println("\n==================================");
+        System.out.print("ID를 찾을 수강생 이름을 입력해 주세요 : ");
+        String input = sc.next();
+
+        List<Map.Entry<String, Student>> findStudentList = studentList.entrySet().stream()
+                .filter(student -> input.equals(student.getValue().getStudentName()))
+                .toList();
+
+        if(findStudentList.isEmpty()) {
+            System.out.println("해당하는 수강생이 없습니다.");
+        } else {
+            System.out.println(input + " 수강생들의 ID 입니다");
+            for (Map.Entry<String, Student> findStudent : findStudentList) {
+                System.out.println(findStudent.getKey());
+            }
+            System.out.println("조회가 완료되었습니다!");
+        }
+    }
+
 
     private static void studentInquiry() {
         if (studentList.isEmpty()) {
