@@ -1,3 +1,8 @@
+/*import model.Score;
+import model.Student;
+import model.Subject;
+import model.SubjectType;*/
+
 import model.*;
 
 import java.util.*;
@@ -10,6 +15,7 @@ public class App {
     private static HashMap<String, Student> studentList;    //수강생 리스트
     private static List<Subject> subjectList;               //과목 리스트
     private static List<Score> scoreList;                   //점수 리스트
+
 
     //index 관리 필드
     private static int studentIndex;
@@ -117,9 +123,8 @@ public class App {
                 case 1 -> displayStudentView(); // 수강생 관리
                 case 2 -> displayScoreView(); // 점수 관리
                 case 3 -> flag = false; // 프로그램 종료
-                default -> {
-                    System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
-                }
+                default -> System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
+
             }
         }
         System.out.println("프로그램을 종료합니다.");
@@ -133,16 +138,20 @@ public class App {
             System.out.println("수강생 관리 페이지");
             System.out.println("0. 이전 메뉴로 돌아가기");
             System.out.println("1. 수강생 등록하기");
-            System.out.println("2. 수강생 전체 목록 조회");
-            System.out.println("3. 수강생 정보 수정하기");
+            System.out.println("2. 수강생 아이디 검색");
+            System.out.println("3. 수강생 전체 목록 조회");
+            System.out.println("4. 수강생 정보 수정하기");
+            System.out.println("5. 수강생 상태별 목록 조회");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
             switch (input) {
                 case 0 -> flag = false;
                 case 1 -> createStudent();
-                case 2 -> studentInquiry();
-                case 3 -> modifyStudentInfo();
+                case 2 -> findStudentId();
+                case 3 -> studentInquiry();
+                case 4 -> modifyStudentInfo();
+                case 5 -> studentStatusInquiry();
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -161,6 +170,7 @@ public class App {
             System.out.println("2. 수강생의 과목별 회차 점수 수정");
             System.out.println("3. 수강생의 특정 과목 회차별 등급 조회");
             System.out.println("4. 수강생의 과목별 평균 등급 조회");
+            System.out.println("5. 상태별 수강생들의 평균 등급 조회");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
@@ -169,12 +179,47 @@ public class App {
                 case 2 -> updateScore();
                 case 3 -> displayGradeView();
                 case 4 -> averageInquiry();
+                case 5 -> studentStatusAverage();
                 case 0 -> flag = false;
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
             }
         }
+    }
+
+    private static void studentStatusAverage() {
+        System.out.print("조회할 상태를 입력해주세요 (RED, GREEN, YELLOW): ");
+        String inputStatus = sc.next().toUpperCase();
+
+        Status status;
+        try {
+            status = Status.valueOf(inputStatus);
+        } catch (IllegalArgumentException e) {
+            System.out.println("유효하지 않은 상태입니다. RED, GREEN, YELLOW 중 하나를 입력해야 합니다.");
+            return;
+        }
+
+        // 해당 상태의 학생들 중 필수 과목 점수의 평균을 정수로 계산
+        double averageScore = studentList.values().stream()
+                .filter(student -> student.getStatus() == status)
+                .flatMap(student -> scoreList.stream()
+                        .filter(score -> score.getStudentId().equals(student.getStudentId()))
+                        .filter(score -> {
+                            Subject subject = subjectList.stream()
+                                    .filter(s -> s.getSubjectId().equals(score.getSubjectId()))
+                                    .findFirst().orElse(null);
+                            return subject != null && subject.getSubjectType() == SubjectType.MANDATORY;
+                        }))
+                .mapToInt(Score::getScore)
+                .average()
+                .orElse(0.0);
+
+        // 정수로 변환
+        int averageScoreAsInt = (int) Math.floor(averageScore);
+        Grade grade = GradeCalculator.calculateGrade(averageScoreAsInt, SubjectType.MANDATORY);
+
+        System.out.println(status + " 상태의 학생들의 필수 과목 평균 등급 : " + grade + "("+averageScoreAsInt+"점)");
     }
 
 
@@ -247,8 +292,6 @@ public class App {
             }
         }
 
-        Score test = new Score(sequence(INDEX_TYPE_SCORE),
-                subjectId, studentId, round, scores, type);
         // 점수 등록
         Score test = new Score(sequence(INDEX_TYPE_SCORE), subjectId, studentId, round, scores, type);
         scoreList.add(test);
@@ -641,6 +684,4 @@ public class App {
             System.out.printf("과목 ID: %s, 회차: %d, 점수: %d, 등급: %s\n", score.getSubjectId(), score.getRound(), score.getScore(), score.getGrade());
         }
     }
-
-
 }
