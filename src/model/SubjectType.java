@@ -14,4 +14,3 @@ public enum SubjectType {
         return value;
     }
 }
-
