@@ -26,6 +26,4 @@ public class GradeCalculator {
         }
         return Grade.N; // Default, should not happen
     }
-
-
 }
