@@ -1,3 +1,8 @@
+/*import model.Score;
+import model.Student;
+import model.Subject;
+import model.SubjectType;*/
+
 import model.*;
 
 import java.util.*;
@@ -10,6 +15,7 @@ public class App {
     private static HashMap<String, Student> studentList;    //수강생 리스트
     private static List<Subject> subjectList;               //과목 리스트
     private static List<Score> scoreList;                   //점수 리스트
+
 
     //index 관리 필드
     private static int studentIndex;
@@ -117,9 +123,8 @@ public class App {
                 case 1 -> displayStudentView(); // 수강생 관리
                 case 2 -> displayScoreView(); // 점수 관리
                 case 3 -> flag = false; // 프로그램 종료
-                default -> {
-                    System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
-                }
+                default -> System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
+
             }
         }
         System.out.println("프로그램을 종료합니다.");
@@ -156,7 +161,6 @@ public class App {
 
     //점수 관리 뷰
     private static void displayScoreView() {
-
         boolean flag = true;
         while (flag) {
             System.out.println("\n==================================");
@@ -231,16 +235,20 @@ public class App {
         System.out.println("등록하실 점수를 입력해주세요 : ");
         int scores = sc.nextInt();
 
+        Score test = new Score(sequence(INDEX_TYPE_SCORE),
+                subjectId, studentId, round, scores, type);
         // 점수 등록
-        scoreList.add(new Score(sequence(INDEX_TYPE_SCORE),
-                subjectId, studentId, round, scores, type));
+        scoreList.add(test);
+
         // 등록한 과목, 회차, 점수(등급)을 출력
-
-
         System.out.println("학생 : " + student.getStudentName());
 
-        System.out.println("과목명 : " + sbName + "에 " + round + "회차 " + scores + "(" +
-                scoreList.get(round - 1).getGrade() + ")" + "을 등록했습니다.");
+        // feedback : 점수 등록 부와 등급 결정 부의 분리
+        // score 객체에서 가져오는 방식
+        // 현재는 순차적으로 가져오는 방식이다. 여기서, 객체를 불러와 가져온다.
+        System.out.println("과목명 : "+ sbName + "에 " + round+ "회차 " + scores +"(" +
+                        test.getGrade() + ")" +"을 등록했습니다.");
+
         // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
 
 
@@ -337,6 +345,40 @@ public class App {
                 System.out.println("과목: " + subject.getSubjectName() + ", 평균 등급: " + averageGrade);
             }
         }
+    }
+
+    private static void displayGradeView() {
+        System.out.print("학생의 ID를 입력하세요: ");
+        String studentId = sc.next();
+
+        System.out.print("과목을 입력하세요 (Java, 객체지향, Spring, JPA, MySQL, 디자인 패턴, Spring Security, Redis, MongoDB): ");
+        String subjectName = sc.next();
+
+        // 학생을 검색합니다.
+        Student student = studentList.get(studentId);
+
+        // 학생이 존재하는지 확인합니다.
+        if (student == null) {
+            System.out.println("해당 학생을 찾을 수 없습니다.");
+            return;
+        }
+
+        // 주어진 과목의 점수를 검색합니다.
+//        Map<Integer, Score> scores = student.getScores().get(subjectName);
+
+        // 주어진 과목에 대한 점수가 있는지 확인합니다.
+//        if (scores == null || scores.isEmpty()) {
+//            System.out.println("해당 학생의 성적이 없습니다.");
+//            return;
+//        }
+//
+//        // 점수를 출력합니다.
+//        System.out.println("[" + subjectName + "] 성적 조회");
+//        for (Map.Entry<Integer, Score> entry : scores.entrySet()) {
+//            int round = entry.getKey();
+//            Score score = entry.getValue();
+//            System.out.println("회차: " + round + ", 성적: " + score.getScore());
+//        }
     }
 
 
