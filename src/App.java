@@ -594,15 +594,6 @@ public class App {
         System.out.print("회차를 입력해 주세요: ");
         int round = sc.nextInt();
 
-        // 과목의 SubjectType 찾기
-        SubjectType subjectType = SubjectType.MANDATORY;
-        for (Subject subject : subjectList) {
-            if (subject.getSubjectId().equals(subjectId)) {
-                subjectType = subject.getSubjectType();
-                break;
-            }
-        }
-
         boolean updated = false;
         for (Score score : scores) {
             if (score.getSubjectId().equals(subjectId) && score.getRound() == round) {
