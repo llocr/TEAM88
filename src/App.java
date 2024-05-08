@@ -246,10 +246,33 @@ public class App {
     private static void displayGradeView() {
         System.out.print("학생 ID를 입력하세요: ");
         String studentId = sc.next();
-        System.out.print("과목 ID를 입력하세요: ");
+
+        // 학생 이름과 수강 과목 출력
+        if (!studentList.containsKey(studentId)) {
+            System.out.println("해당 학생이 존재하지 않습니다.");
+            return;
+        }
+        String studentName = studentList.get(studentId).getStudentName();
+        System.out.println(studentName+"학생이 수강중인 과목 입니다.");
+
+        // 수강 중인 과목 목록 출력
+        Student student = studentList.get(studentId);
+        List<String> subjects = student.getSubjects();
+        for (String subjectId : subjects) {
+            for (Subject subject : subjectList) {
+                if (subject.getSubjectId().equals(subjectId)) {
+                    System.out.println(subject.getSubjectId() + " - " + subject.getSubjectName());
+                    break;
+                }
+            }
+        }
+
+        // 조회할 과목 선택
+        System.out.print("조회할 과목의 ID를 입력하세요: ");
         String subjectId = sc.next();
 
-        // 모든 회차를 반복하고 학점을 표시
+        // 해당 과목의 성적 조회
+        System.out.println("=== " + getSubjectNameById(subjectId) + " 과목의 성적 ===");         //  과목 이름을 함께 출력
         for (int round = 1; ; round++) {
             Grade grade = findGrade(subjectId, studentId, round);
             if (grade == Grade.N) {
@@ -257,6 +280,17 @@ public class App {
             }
             System.out.println(round + "회차: " + grade);
         }
+    }
+    // 과목 ID를 기반으로 과목 이름을 가져옴
+    private static String getSubjectNameById(String subjectId) {
+        // 과목 리스트를 반복하면서 과목 ID와 일치하는 과목을 찾음
+        for (Subject subject : subjectList) {
+            if (subject.getSubjectId().equals(subjectId)) {
+               return subject.getSubjectName();  /* 과목 ID도 같이 출력 할려면 : subject.getSubjectId() 추가 */
+            }
+        }
+        // 일치하는 과목 ID가 없을 경우
+        return "알 수 없는 과목";
     }
 
     private static Grade findGrade(String subjectId, String studentId, int round) {
