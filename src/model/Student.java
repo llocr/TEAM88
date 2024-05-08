@@ -28,10 +28,6 @@ public class Student {
         return status;
     }
 
-    public List<String> getSubjects() {
-        return subjects;
-    }
-
     public void setSubject(String subjectId) {
         //수강과목 리스트에 선택한 과목 ID 값 추가
         subjects.add(subjectId);

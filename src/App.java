@@ -350,41 +350,6 @@ public class App {
         }
     }
 
-    private static void displayGradeView() {
-        System.out.print("학생의 ID를 입력하세요: ");
-        String studentId = sc.next();
-
-        System.out.print("과목을 입력하세요 (Java, 객체지향, Spring, JPA, MySQL, 디자인 패턴, Spring Security, Redis, MongoDB): ");
-        String subjectName = sc.next();
-
-        // 학생을 검색합니다.
-        Student student = studentList.get(studentId);
-
-        // 학생이 존재하는지 확인합니다.
-        if (student == null) {
-            System.out.println("해당 학생을 찾을 수 없습니다.");
-            return;
-        }
-
-        // 주어진 과목의 점수를 검색합니다.
-//        Map<Integer, Score> scores = student.getScores().get(subjectName);
-
-        // 주어진 과목에 대한 점수가 있는지 확인합니다.
-//        if (scores == null || scores.isEmpty()) {
-//            System.out.println("해당 학생의 성적이 없습니다.");
-//            return;
-//        }
-//
-//        // 점수를 출력합니다.
-//        System.out.println("[" + subjectName + "] 성적 조회");
-//        for (Map.Entry<Integer, Score> entry : scores.entrySet()) {
-//            int round = entry.getKey();
-//            Score score = entry.getValue();
-//            System.out.println("회차: " + round + ", 성적: " + score.getScore());
-//        }
-    }
-
-
 
     private static void createStudent() {
         System.out.println("\n==================================");
