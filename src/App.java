@@ -189,6 +189,43 @@ public class App {
     }
 
     private static void studentStatusAverage() {
+        // 현재 상태별 인원수를 출력하는 구문
+        System.out.println("\n==================================");
+        System.out.println("현재 상태별 인원수\n");
+
+        int redAmount = 0;
+        int greenAmount = 0;
+        int yellowAmount = 0;
+
+        // 모든 상태를 가져옴
+        Status[] statusList = Status.values();
+
+        // 각 상태별 학생 수를 계산
+        for (Status status : statusList) {
+            int count = (int) studentList.values().stream()
+                    .filter(student -> student.getStatus() == status)
+                    .count();
+
+            // 상태에 따라 적절한 변수에 학생 수를 저장
+            switch (status) {
+                case RED:
+                    redAmount = count;
+                    break;
+                case GREEN:
+                    greenAmount = count;
+                    break;
+                case YELLOW:
+                    yellowAmount = count;
+                    break;
+            }
+        }
+
+        // 상태별 학생 수의 합계를 출력 (예시)
+        System.out.println("RED 학생 수: " + redAmount);
+        System.out.println("GREEN 학생 수: " + greenAmount);
+        System.out.println("YELLOW 학생 수: " + yellowAmount);
+        System.out.println("==================================\n");
+
         System.out.print("조회할 상태를 입력해주세요 (RED, GREEN, YELLOW): ");
         String inputStatus = sc.next().toUpperCase();
 
