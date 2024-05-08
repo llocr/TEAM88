@@ -142,6 +142,7 @@ public class App {
             System.out.println("3. 수강생 전체 목록 조회");
             System.out.println("4. 수강생 정보 수정하기");
             System.out.println("5. 수강생 상태별 목록 조회");
+            System.out.println("6. 수강생 삭제하기");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
@@ -152,6 +153,7 @@ public class App {
                 case 3 -> studentInquiry();
                 case 4 -> modifyStudentInfo();
                 case 5 -> studentStatusInquiry();
+                case 6 -> deleteStudent();
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -254,6 +256,7 @@ public class App {
 
     }
 
+
     private static void displayGradeView() {
         System.out.print("학생 ID를 입력하세요: ");
         String studentId = sc.next();
@@ -290,7 +293,7 @@ public class App {
             if (grade == Grade.N) {
                 break; // 해당 회차의 학점이 없으면 중지
             }
-            System.out.println(round + "회차: " + grade);
+            System.out.println(round + "회차 : " + grade);
         }
     }
     // 과목 ID를 기반으로 과목 이름을 가져옴
@@ -298,7 +301,7 @@ public class App {
         // 과목 리스트를 반복하면서 과목 ID와 일치하는 과목을 찾음
         for (Subject subject : subjectList) {
             if (subject.getSubjectId().equals(subjectId)) {
-               return subject.getSubjectName();  /* 과목 ID도 같이 출력 할려면 : subject.getSubjectId() 추가 */
+                return subject.getSubjectName();  /* 과목 ID도 같이 출력 할려면 : subject.getSubjectId() 추가 */
             }
         }
         // 일치하는 과목 ID가 없을 경우
@@ -602,6 +605,19 @@ public class App {
         }
     }
 
+    public static void deleteStudent() {
+        System.out.print("\n삭제할 수강생 ID를 입력해 주세요: ");
+        String studentId = sc.next();
+        if (studentList.containsKey(studentId)) {
+            studentList.remove(studentId);
+            scoreList.removeIf(score -> score.getStudentId().equals(studentId));
+            System.out.println("수강생 및 관련 점수가 삭제되었습니다.");
+        }
+        else {
+            System.out.println("존재하지 않는 수강생입니다.");
+        }
+    }
+
     private static void updateScore() {
         System.out.print("\n수정할 점수의 수강생 ID를 입력해 주세요: ");
         String studentId = sc.next();
@@ -618,31 +634,25 @@ public class App {
         System.out.print("회차를 입력해 주세요: ");
         int round = sc.nextInt();
 
-        // 과목의 SubjectType 찾기
-        SubjectType subjectType = SubjectType.MANDATORY;
-        for (Subject subject : subjectList) {
-            if (subject.getSubjectId().equals(subjectId)) {
-                subjectType = subject.getSubjectType();
-                break;
-            }
-        }
-
         boolean updated = false;
         for (Score score : scores) {
             if (score.getSubjectId().equals(subjectId) && score.getRound() == round) {
                 System.out.print("새로운 점수를 입력해 주세요: ");
-                int newScore = sc.nextInt();
-
-                Grade newGrade = GradeCalculator.calculateGrade(newScore, subjectType);
-
-                score.setGrade(newGrade);
-                score.setScore(newScore);
-                System.out.println("점수가 수정되었습니다.");
-                updated = true;
-                break;
+                while (!updated) {
+                    int newScore = sc.nextInt();
+                    if (0 <= newScore && newScore <= 100) {
+                        score.setScoreAndGrade(newScore);
+                        System.out.println("점수가 수정되었습니다.");
+                        updated = true;
+                    } else {
+                        System.out.print("0에서 100 사이의 정수를 입력하세요: ");
+                    }
+                }
+                if (updated) {
+                    break;
+                }
             }
         }
-
         if (!updated) {
             System.out.println("해당 과목의 점수 정보를 찾을 수 없습니다.");
         }
