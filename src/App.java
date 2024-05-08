@@ -160,7 +160,8 @@ public class App {
             System.out.println("1. 수강생의 과목별 시험 회차 및 점수 등록");
             System.out.println("2. 수강생의 과목별 회차 점수 수정");
             System.out.println("3. 수강생의 특정 과목 회차별 등급 조회");
-            System.out.println("4. 이전 메뉴로 돌아가기");
+            System.out.println("4. 수강생의 과목별 평균 등급 조회");
+            System.out.println("5. 이전 메뉴로 돌아가기");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
@@ -168,7 +169,8 @@ public class App {
                 case 1 -> createScore();
                 case 2 -> updateScore();
                 case 3 -> displayGradeView();
-                case 4 -> flag = false; // 우선은 3으로 이전메뉴를 설정했습니다.
+                case 4 -> averageInquiry();
+                case 5 -> flag = false;
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -246,8 +248,6 @@ public class App {
         String studentId = sc.next();
         System.out.print("과목 ID를 입력하세요: ");
         String subjectId = sc.next();
-        // 임의의 값이며, 수정해주세요!
-        System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:" + GradeCalculator.calculateGrade(60,SubjectType.MANDATORY));
 
         // 모든 회차를 반복하고 학점을 표시
         for (int round = 1; ; round++) {
@@ -255,7 +255,7 @@ public class App {
             if (grade == Grade.N) {
                 break; // 해당 회차의 학점이 없으면 중지
             }
-            System.out.println(round + "회차 : " + grade);
+            System.out.println(round + "회차: " + grade);
         }
     }
 
@@ -269,6 +269,39 @@ public class App {
         // 해당 회차에 대한 학점이 없을 경우 기본값으로 N을 반환
         return Grade.N;
     }
+
+
+    private static void averageInquiry() {
+        System.out.print("평균 등급을 조회할 학생의 ID를 입력하세요: ");
+        String studentId = sc.next();
+
+        // 학생 이름 출력
+        if (!studentList.containsKey(studentId)) {
+            System.out.println("해당 학생이 존재하지 않습니다.");
+            return;
+        }
+        String studentName = studentList.get(studentId).getStudentName();
+        System.out.println("학생 이름: " + studentName);
+
+        // 각 과목의 평균 등급 계산 및 출력
+        for (Subject subject : subjectList) {
+            int totalScore = 0;
+            int count = 0;
+            for (Score score : scoreList) {
+                if (score.getStudentId().equals(studentId) && score.getSubjectId().equals(subject.getSubjectId())) {
+                    totalScore += score.getScore();
+                    count++;
+                }
+            }
+            if (count > 0) {
+                double averageScore = (double) totalScore / count;
+                Grade averageGrade = GradeCalculator.calculateGrade((int) averageScore, subject.getSubjectType());
+                System.out.println("과목: " + subject.getSubjectName() + ", 평균 등급: " + averageGrade);
+            }
+        }
+    }
+
+
 
     private static void createStudent() {
         System.out.println("\n==================================");
