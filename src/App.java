@@ -227,14 +227,14 @@ public class App {
 
         // 점수 등록
         scoreList.add(new Score(sequence(INDEX_TYPE_SCORE),
-                subjectId, studentId, round, scores));
+                subjectId, studentId, round, scores, type));
         // 등록한 과목, 회차, 점수(등급)을 출력
 
 
         System.out.println("학생 : " + student.getStudentName());
 
         System.out.println("과목명 : " + sbName + "에 " + round + "회차 " + scores + "(" +
-                scoreList.get(round - 1).calculateGrade(scores, type) + ")" + "을 등록했습니다.");
+                scoreList.get(round - 1).getGrade() + ")" + "을 등록했습니다.");
         // 점수를 등록할때 학생의 ID를 받아서 해당 객체의 과목등을 확인한다.
 
 
@@ -246,8 +246,8 @@ public class App {
         String studentId = sc.next();
         System.out.print("과목 ID를 입력하세요: ");
         String subjectId = sc.next();
-
-        System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:");
+        // 임의의 값이며, 수정해주세요!
+        System.out.println("학생 " + studentId + "의 과목 " + subjectId + "의 학점:" + GradeCalculator.calculateGrade(60,SubjectType.MANDATORY));
 
         // 모든 회차를 반복하고 학점을 표시
         for (int round = 1; ; round++) {
@@ -448,11 +448,24 @@ public class App {
         System.out.print("회차를 입력해 주세요: ");
         int round = sc.nextInt();
 
+        // 과목의 SubjectType 찾기
+        SubjectType subjectType = SubjectType.MANDATORY;
+        for (Subject subject : subjectList) {
+            if (subject.getSubjectId().equals(subjectId)) {
+                subjectType = subject.getSubjectType();
+                break;
+            }
+        }
+
         boolean updated = false;
         for (Score score : scores) {
             if (score.getSubjectId().equals(subjectId) && score.getRound() == round) {
                 System.out.print("새로운 점수를 입력해 주세요: ");
                 int newScore = sc.nextInt();
+
+                Grade newGrade = GradeCalculator.calculateGrade(newScore, subjectType);
+
+                score.setGrade(newGrade);
                 score.setScore(newScore);
                 System.out.println("점수가 수정되었습니다.");
                 updated = true;
@@ -481,7 +494,7 @@ public class App {
 
     private static void displayScores(List<Score> scores) {
         for (Score score : scores) {
-            System.out.printf("과목 ID: %s, 회차: %d, 점수: %d\n", score.getSubjectId(), score.getRound(), score.getScore());
+            System.out.printf("과목 ID: %s, 회차: %d, 점수: %d, 등급: %s\n", score.getSubjectId(), score.getRound(), score.getScore(), score.getGrade());
         }
     }
 
