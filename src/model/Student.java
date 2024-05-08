@@ -24,8 +24,8 @@ public class Student {
         return studentName;
     }
 
-    public String getStatus() {
-        return status.name();
+    public Status getStatus() {
+        return status;
     }
 
     public List<String> getSubjects() {

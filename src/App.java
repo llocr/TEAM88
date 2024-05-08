@@ -133,16 +133,20 @@ public class App {
             System.out.println("수강생 관리 페이지");
             System.out.println("0. 이전 메뉴로 돌아가기");
             System.out.println("1. 수강생 등록하기");
-            System.out.println("2. 수강생 전체 목록 조회");
-            System.out.println("3. 수강생 정보 수정하기");
+            System.out.println("2. 수강생 아이디 검색");
+            System.out.println("3. 수강생 전체 목록 조회");
+            System.out.println("4. 수강생 정보 수정하기");
+            System.out.println("5. 수강생 상태별 목록 조회");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
 
             switch (input) {
                 case 0 -> flag = false;
                 case 1 -> createStudent();
-                case 2 -> studentInquiry();
-                case 3 -> modifyStudentInfo();
+                case 2 -> findStudentId();
+                case 3 -> studentInquiry();
+                case 4 -> modifyStudentInfo();
+                case 5 -> studentStatusInquiry();
                 default -> {
                     System.out.println("잘못된 입력입니다.");
                 }
@@ -242,7 +246,6 @@ public class App {
 
     }
 
-
     private static void displayGradeView() {
         System.out.print("학생 ID를 입력하세요: ");
         String studentId = sc.next();
@@ -273,6 +276,7 @@ public class App {
 
         // 해당 과목의 성적 조회
         System.out.println("=== " + getSubjectNameById(subjectId) + " 과목의 성적 ===");         //  과목 이름을 함께 출력
+
         for (int round = 1; ; round++) {
             Grade grade = findGrade(subjectId, studentId, round);
             if (grade == Grade.N) {
@@ -410,6 +414,27 @@ public class App {
 
     }
 
+    private static void findStudentId() {
+        System.out.println("\n==================================");
+        System.out.print("ID를 찾을 수강생 이름을 입력해 주세요 : ");
+        String input = sc.next();
+
+        List<Map.Entry<String, Student>> findStudentList = studentList.entrySet().stream()
+                .filter(student -> input.equals(student.getValue().getStudentName()))
+                .toList();
+
+        if(findStudentList.isEmpty()) {
+            System.out.println("해당하는 수강생이 없습니다.");
+        } else {
+            System.out.println(input + " 수강생들의 ID 입니다");
+            for (Map.Entry<String, Student> findStudent : findStudentList) {
+                System.out.println(findStudent.getKey());
+            }
+            System.out.println("조회가 완료되었습니다!");
+        }
+    }
+
+
     private static void studentInquiry() {
         if (studentList.isEmpty()) {
             System.out.println("\n==================================");
@@ -424,6 +449,42 @@ public class App {
             }
         }
     }
+
+    //수강생 상태별 목록 조회 메소드
+    private static void studentStatusInquiry() {
+        System.out.println("\n==================================");
+        System.out.println("상태별 수강생 조회하기");
+
+        Status[] statusList = Status.values();
+        for (Status status : statusList) {
+            System.out.println(status.ordinal() + ". " + status.name());
+        }
+
+        System.out.print("번호 입력 : ");
+        int input = sc.nextInt();
+
+        if (input > statusList.length - 1 || input < 0) {
+            System.out.println("유효하지 않은 값입니다.");
+        } else {
+            //Stream 활용하여 상태가 같은 studentList 가져오기
+            List<Map.Entry<String, Student>> studentStatusList =
+                    studentList.entrySet().stream()
+                            .filter(student -> student.getValue().getStatus().ordinal() == input)
+                            .toList();
+
+            if (studentStatusList.isEmpty()) {
+                System.out.println("해당 상태의 학생이 없습니다.");
+            } else {
+                System.out.println("\n" + statusList[input] + " 상태 수강생 조회");
+                for (Map.Entry<String, Student> findStudent : studentStatusList) {
+                    System.out.println(findStudent.getKey() + " : " + findStudent.getValue().getStudentName());
+                }
+
+                System.out.println("조회가 완료되었습니다!");
+            }
+        }
+    }
+
 
     //수강생 정보 수정 메소드
     private static void modifyStudentInfo() {
