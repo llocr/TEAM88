@@ -14,7 +14,7 @@ public class Score {
         this.studentId = studentId;
         this.round = round;
         this.score = score;
-        this.grade = GradeCalculator.calculateGrade(score, type);
+        this.grade = GradeCalculator.calculateGrade(score, type); // 등급 계산
     }
 
     public Grade getGrade() {
