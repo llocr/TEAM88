@@ -11,6 +11,7 @@ public class Score {
     private int round;
     private int score;
     private Grade grade;
+    private SubjectType subjectType;
 
     public Score(String scoreId, String subjectId, String studentId, int round, int score, SubjectType type) {
         this.scoreId = scoreId;
@@ -18,6 +19,7 @@ public class Score {
         this.studentId = studentId;
         this.round = round;
         this.score = score;
+        this.subjectType = subjectType;
         this.grade = GradeCalculator.calculateGrade(score, type);
     }
 
@@ -29,14 +31,9 @@ public class Score {
         return score;
     }
 
-    public int setScore(int score) {
-        this.score = score;
-        return score;
-    }
-
-    public Grade setGrade(Grade grade) {
-        this.grade = grade;
-        return grade;
+    public void setScoreAndGrade(int newScore) {
+        this.score = newScore;
+        this.grade = GradeCalculator.calculateGrade(newScore, this.subjectType);
     }
 
     public String getSubjectId() {
