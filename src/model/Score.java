@@ -34,6 +34,11 @@ public class Score {
         return score;
     }
 
+    public Grade setGrade(Grade grade) {
+        this.grade = grade;
+        return grade;
+    }
+
     public String getSubjectId() {
         return subjectId;
     }

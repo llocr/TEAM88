@@ -448,11 +448,24 @@ public class App {
         System.out.print("회차를 입력해 주세요: ");
         int round = sc.nextInt();
 
+        // 과목의 SubjectType 찾기
+        SubjectType subjectType = SubjectType.MANDATORY;
+        for (Subject subject : subjectList) {
+            if (subject.getSubjectId().equals(subjectId)) {
+                subjectType = subject.getSubjectType();
+                break;
+            }
+        }
+
         boolean updated = false;
         for (Score score : scores) {
             if (score.getSubjectId().equals(subjectId) && score.getRound() == round) {
                 System.out.print("새로운 점수를 입력해 주세요: ");
                 int newScore = sc.nextInt();
+
+                Grade newGrade = GradeCalculator.calculateGrade(newScore, subjectType);
+
+                score.setGrade(newGrade);
                 score.setScore(newScore);
                 System.out.println("점수가 수정되었습니다.");
                 updated = true;
@@ -481,7 +494,7 @@ public class App {
 
     private static void displayScores(List<Score> scores) {
         for (Score score : scores) {
-            System.out.printf("과목 ID: %s, 회차: %d, 점수: %d\n", score.getSubjectId(), score.getRound(), score.getScore());
+            System.out.printf("과목 ID: %s, 회차: %d, 점수: %d, 등급: %s\n", score.getSubjectId(), score.getRound(), score.getScore(), score.getGrade());
         }
     }
 
