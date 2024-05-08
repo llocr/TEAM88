@@ -50,6 +50,4 @@ public class Score {
     public int getRound() {
         return round;
     }
-
-
 }
