@@ -1,4 +1,4 @@
-package model.impls;
+package model;
 
 public class GradeCalculator {
     private static final int[] mandatoryThresholds = {95, 90, 80, 70, 60, 0};

@@ -1,16 +1,15 @@
 package model;
 
-import model.impls.*;
-
 import java.util.*;
 
+import static model.DataManger.*;
 
 public class StudentManager {
     protected static DataManger dataManger;
 
-    static List<Score> scoreList = DataManger.getScoreList();
-    static List<Subject> subjectList = DataManger.getSubjects();
-    static HashMap<String, Student> studentList = DataManger.getStudentList();
+    static List<Score> scoreList = getScoreList();
+    static List<Subject> subjectList = getSubjects();
+    static HashMap<String, Student> studentList = getStudentList();
 
     public StudentManager(DataManger dataManger) {
         StudentManager.dataManger = dataManger;

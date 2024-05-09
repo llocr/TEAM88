@@ -1,10 +1,5 @@
 package model;
 
-import model.impls.Score;
-import model.impls.Student;
-import model.impls.Subject;
-import model.impls.SubjectType;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

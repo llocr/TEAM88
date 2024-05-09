@@ -1,4 +1,4 @@
-package model.impls;
+package model;
 
 public class ScoreBox {
     // studentId , StuList<회차, score>를 받아서 따로 관리하는 느낌이다.
