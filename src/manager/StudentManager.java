@@ -24,8 +24,8 @@ public class StudentManager {
         System.out.println("\n=== 수강할 과목을 선택해 주세요 ===");
         System.out.println("0. 수강 과목 선택 종료하기");
         //subjectList에 저장된 과목들 출력
-        for (int i = 1; i < subjectList.size(); i++) {
-            System.out.println(i + ". " + subjectList.get(i).getSubjectName()
+        for (int i = 0; i < subjectList.size(); i++) {
+            System.out.println(i+1 + ". " + subjectList.get(i).getSubjectName()
                     + ", (" + subjectList.get(i).getSubjectType().getValue() + ")");
         }
 
