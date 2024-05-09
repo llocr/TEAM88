@@ -1,4 +1,4 @@
-package model;
+package model.impls;
 
 public enum SubjectType {
     MANDATORY("필수과목"),

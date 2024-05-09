@@ -1,4 +1,4 @@
-package model;
+package model.impls;
 
 public class Subject {
     private String subjectId;

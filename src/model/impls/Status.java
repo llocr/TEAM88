@@ -1,4 +1,4 @@
-package model;
+package model.impls;
 
 public enum Status {
     GREEN,

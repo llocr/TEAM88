@@ -1,7 +1,4 @@
-package model;
-
-import java.util.HashMap;
-import java.util.List;
+package model.impls;
 
 public class ScoreBox {
     // studentId , StuList<회차, score>를 받아서 따로 관리하는 느낌이다.

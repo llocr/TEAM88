@@ -1,5 +1,5 @@
-import model.*;
-
+import model.DataManger;
+import model.StudentManager;
 
 public class App {
     public static void main(String[] args) {

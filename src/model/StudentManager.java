@@ -1,15 +1,16 @@
 package model;
 
+import model.impls.*;
+
 import java.util.*;
 
-import static model.DataManger.*;
 
 public class StudentManager {
     protected static DataManger dataManger;
 
-    static List<Score> scoreList = getScoreList();
-    static List<Subject> subjectList = getSubjects();
-    static HashMap<String, Student> studentList = getStudentList();
+    static List<Score> scoreList = DataManger.getScoreList();
+    static List<Subject> subjectList = DataManger.getSubjects();
+    static HashMap<String, Student> studentList = DataManger.getStudentList();
 
     public StudentManager(DataManger dataManger) {
         StudentManager.dataManger = dataManger;
@@ -243,7 +244,7 @@ public class StudentManager {
         }
 
         // 점수 등록
-        Score test = new Score(sequence(INDEX_TYPE_SCORE), subjectId, studentId, round, scores, type);
+        Score test = new Score(DataManger.sequence(DataManger.INDEX_TYPE_SCORE), subjectId, studentId, round, scores, type);
         scoreList.add(test);
         System.out.println("학생 : " + student.getStudentName());
         System.out.println("과목명 : " + sbName + "에 " + round + "회차 " + scores + "(" + test.getGrade() + ")을 등록했습니다.");
@@ -350,7 +351,7 @@ public class StudentManager {
         String name = sc.next();
 
         //새로운 수강생 객체 생성
-        Student student = new Student(sequence(INDEX_TYPE_STUDENT), name);
+        Student student = new Student(DataManger.sequence(DataManger.INDEX_TYPE_STUDENT), name);
 
         System.out.println("\n필수 과목 최소 3개, 선택 과목 최소 2개를 선택하셔야 합니다.");
         System.out.println("\n=== 수강할 과목을 선택해 주세요 ===");

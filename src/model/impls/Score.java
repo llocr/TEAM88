@@ -1,8 +1,4 @@
-package model;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+package model.impls;
 
 public class Score {
     private String scoreId;
