@@ -212,6 +212,7 @@ public class ScoreManager {
             System.out.println("해당 과목의 성적을 조회 할 수 없습니다. 올바른 과목 코드를 입력해주세요 :)");
         } else {
             System.out.println("=== " + getSubjectNameById(subjectId) + " 과목의 성적 ==="); // 과목 이름을 함께 출력
+
         // 회차 선택
             System.out.print("조회할 회차를 입력하세요: ");
             int round = sc.nextInt();
