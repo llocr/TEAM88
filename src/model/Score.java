@@ -46,4 +46,8 @@ public class Score {
     public int getRound() {
         return round;
     }
+
+    public String getScoreId() {
+        return scoreId;
+    }
 }

@@ -6,6 +6,7 @@ import type.Status;
 import type.SubjectType;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -81,14 +82,28 @@ public class ScoreManager {
                 System.out.println("회차는 1회차부터 10회차까지 있습니다. 다시 입력해주세요 :)");
             } else if ((scores < 0) || (scores > 100)) {
                 System.out.println("점수는 0점부터 100점까지 입력이 가능합니다. 다시 입력해주세요 :)");
+            }
+
+            // 이미 등록된 회차인지 확인
+            int finalRound = round;
+            String finalSubjectId = subjectId;
+            String finalStudentId = studentId;
+            boolean isRoundAlreadyRegistered = scoreList.stream()
+                    .anyMatch(score -> score.getStudentId().equals(finalStudentId) &&
+                            score.getSubjectId().equals(finalSubjectId) &&
+                            score.getRound() == finalRound);
+
+            if (isRoundAlreadyRegistered) {
+                System.out.println("이미 " + round + "회차에 대한 점수가 등록되어 있습니다. 다른 회차를 입력해주세요.");
             } else {
-                validInput = false;
+                validInput = false;  // 유효한 회차와 점수를 받았으므로 반복 종료
             }
         }
 
         // 점수 등록
         Score test = new Score(DataManger.sequence(DataManger.INDEX_TYPE_SCORE), subjectId, studentId, round, scores, type);
         scoreList.add(test);
+        System.out.println(test.getScoreId());
         System.out.println("학생 : " + student.getStudentName());
         System.out.println("과목명 : " + sbName + "에 " + round + "회차 " + scores + "(" + test.getGrade() + ")을 등록했습니다.");
     }
