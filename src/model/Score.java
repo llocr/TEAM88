@@ -4,10 +4,10 @@ import type.Grade;
 import type.SubjectType;
 
 public class Score {
-    private String scoreId;
-    private String subjectId;
-    private String studentId;
-    private int round;
+    private final String scoreId;
+    private final String subjectId;
+    private final String studentId;
+    private final int round;
     private int score;
     private Grade grade;
     private SubjectType subjectType;

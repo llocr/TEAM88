@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Student {
-    private String studentId;
+    private final String studentId;
     private String studentName;
     private List<String> subjects;
     private Status status;

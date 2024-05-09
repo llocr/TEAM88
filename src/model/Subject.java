@@ -3,7 +3,7 @@ package model;
 import type.SubjectType;
 
 public class Subject {
-    private String subjectId;
+    private final String subjectId;
     private String subjectName;
     private SubjectType subjectType;
 
