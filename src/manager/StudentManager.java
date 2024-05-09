@@ -12,6 +12,9 @@ import static manager.DataManger.*;
 public class StudentManager {
     public static Scanner sc = new Scanner(System.in);
 
+    /*
+    1. 수강생 등록 메소드
+     */
     public static void createStudent() {
         System.out.println("\n==================================");
         System.out.print("등록할 수강생 이름을 입력해 주세요 : ");
@@ -83,6 +86,9 @@ public class StudentManager {
         System.out.println("\n" + name + " 수강생 등록 성공!");
     }
 
+    /*
+    2. 수강생 이름으로 수강생 ID 검색
+     */
     public static void findStudentId() {
         System.out.println("\n==================================");
         System.out.print("ID를 찾을 수강생 이름을 입력해 주세요 : ");
@@ -103,7 +109,9 @@ public class StudentManager {
         }
     }
 
-
+    /*
+    3. 수강생 전체 목록 조회
+     */
     public static void studentInquiry() {
         if (studentList.isEmpty()) {
             System.out.println("\n==================================");
@@ -144,7 +152,9 @@ public class StudentManager {
         }
     }
 
-    //수강생 상태별 목록 조회 메소드
+    /*
+    4. 상태별 수강생 목록 조회
+     */
     public static void studentStatusInquiry() {
         System.out.println("\n==================================");
         System.out.println("상태별 수강생 조회하기");
@@ -179,8 +189,9 @@ public class StudentManager {
         }
     }
 
-
-    //수강생 정보 수정 메소드
+    /*
+    5. 수강생 정보 수정하기
+     */
     public static void modifyStudentInfo() {
         System.out.println("\n==================================");
         //학생 아이디 받기
@@ -214,7 +225,9 @@ public class StudentManager {
         }
     }
 
-    //수강생 이름 수정
+    /*
+    5-1. 수강생 이름 수정하기
+     */
     public static void modifyStudentName(Student student) {
         System.out.print("변경할 이름을 입력하세요 : ");
         String inputName = sc.next();
@@ -227,7 +240,9 @@ public class StudentManager {
         System.out.println("수강생의 이름이 " + inputName + "(으)로 변경이 완료되었습니다!");
     }
 
-    //수강생 상태 수정
+    /*
+    5-2. 수강생 상태 수정하기
+     */
     public static void modifyStudentStatus(Student student) {
         //Status List 생성
         Status[] statusList = Status.values();
@@ -254,6 +269,9 @@ public class StudentManager {
         }
     }
 
+    /*
+    6. 수강생 삭제하기
+     */
     public static void deleteStudent() {
         System.out.print("\n삭제할 수강생 ID를 입력해 주세요: ");
         String studentId = sc.next();

@@ -14,6 +14,9 @@ import static manager.DataManger.*;
 public class ScoreManager {
     public static Scanner sc = new Scanner(System.in);
 
+    /*
+    1. 과목별 시험 회차 및 점수 등록
+     */
     public static void createScore() {
         // 변수 초기화
         Student student = null;
@@ -90,7 +93,9 @@ public class ScoreManager {
         System.out.println("과목명 : " + sbName + "에 " + round + "회차 " + scores + "(" + test.getGrade() + ")을 등록했습니다.");
     }
 
-
+    /*
+    2. 과목별 회차 점수 조정
+     */
     public static void updateScore() {
         System.out.print("\n수정할 점수의 수강생 ID를 입력해 주세요: ");
         String studentId = sc.next();
@@ -131,6 +136,9 @@ public class ScoreManager {
         }
     }
 
+    /*
+    2-1. 수강생 아이디로 점수 정보 가져오기
+     */
     public static List<Score> findScoresByStudentId(String studentId) {
         List<Score> scores = new ArrayList<>();
         for (Score score : scoreList) {
@@ -144,14 +152,18 @@ public class ScoreManager {
         return scores;
     }
 
-
+    /*
+    2-2. 수강생 점수 보여 주기
+     */
     public static void displayScores(List<Score> scores) {
         for (Score score : scores) {
             System.out.printf("과목 ID: %s, 회차: %d, 점수: %d, 등급: %s\n", score.getSubjectId(), score.getRound(), score.getScore(), score.getGrade());
         }
     }
 
-
+    /*
+    3. 특정 과목 회차별 등급 조회
+     */
     public static void displayGradeView() {
         System.out.print("학생 ID를 입력하세요: ");
         String studentId = sc.next();
@@ -192,7 +204,9 @@ public class ScoreManager {
         }
     }
 
-    // 과목 ID를 기반으로 과목 이름을 가져옴
+    /*
+    3-1. 과목 ID로 Subject 이름 가져오기
+     */
     public static String getSubjectNameById(String subjectId) {
         // 과목 리스트를 반복하면서 과목 ID와 일치하는 과목을 찾음
         for (Subject subject : subjectList) {
@@ -204,6 +218,9 @@ public class ScoreManager {
         return "알 수 없는 과목";
     }
 
+    /*
+    3-2. 해당하는 Grade 찾기
+     */
     public static Grade findGrade(String subjectId, String studentId, int round) {
         for (Score score : scoreList) {
             if (score.getSubjectId().equals(subjectId) && score.getStudentId().equals(studentId) && score.getRound() == round) {
@@ -215,6 +232,9 @@ public class ScoreManager {
         return Grade.N;
     }
 
+    /*
+    4. 수강생의 과목별 평균 등급 조회
+     */
     public static void averageInquiry() {
         System.out.print("평균 등급을 조회할 학생의 ID를 입력하세요: ");
         String studentId = sc.next();
@@ -245,6 +265,9 @@ public class ScoreManager {
         }
     }
 
+    /*
+    5. 상태별 수강생들의 평균 등급 조회
+     */
     public static void studentStatusAverage() {
         // 현재 상태별 인원수를 출력하는 구문
         System.out.println("\n==================================");
