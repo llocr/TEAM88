@@ -2,24 +2,23 @@ import manager.DataManger;
 import manager.ScoreManager;
 import manager.StudentManager;
 
-import model.*;
 import java.util.*;
 public class App {
-    public static void main(String[] args) {
-        DataManger dataManger = new DataManger();
-        StudentManager studentManager = new StudentManager(dataManger);
-        ScoreManager scoreManager = new ScoreManager(dataManger);
+    public static Scanner sc = new Scanner(System.in);
+    public static DataManger dataManger = new DataManger();
+    public static StudentManager studentManager = new StudentManager();
+    public static ScoreManager scoreManager = new ScoreManager();
 
+    public static void main(String[] args) {
         try {
-            displayMainView(studentManager, scoreManager);
+            displayMainView();
         } catch (Exception e) {
             System.out.println("오류가 발생했습니다. 프로그램을 종료합니다.");
         }
     }
 
     //main view
-    private static void displayMainView(StudentManager studentManager, ScoreManager scoreManager) throws Exception {
-        Scanner sc = new Scanner(System.in);
+    private static void displayMainView() throws Exception {
         boolean flag = true;
         while (flag) {
             System.out.println("\n==================================");
@@ -31,8 +30,8 @@ public class App {
             int input = sc.nextInt();
 
             switch (input) {
-                case 1 -> displayStudentView(studentManager, sc); // 수강생 관리
-                case 2 -> displayScoreView(scoreManager, sc); // 점수 관리
+                case 1 -> displayStudentView(); // 수강생 관리
+                case 2 -> displayScoreView(); // 점수 관리
                 case 3 -> flag = false; // 프로그램 종료
                 default -> System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
 
@@ -42,7 +41,7 @@ public class App {
     }
 
     //수강생 관리 뷰
-    private static void displayStudentView(StudentManager studentManager, Scanner sc) {
+    private static void displayStudentView() {
         boolean flag = true;
         while (flag) {
             System.out.println("\n==================================");
@@ -73,7 +72,7 @@ public class App {
     }
 
     //점수 관리 뷰
-    private static void displayScoreView(ScoreManager scoreManager, Scanner sc) {
+    private static void displayScoreView() {
         boolean flag = true;
         while (flag) {
             System.out.println("\n==================================");

@@ -6,16 +6,15 @@ import model.Subject;
 import type.SubjectType;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 public class DataManger {
 
     //데이터 저장소
-    private static HashMap<String, Student> studentList;    //수강생 리스트
-    private static List<Subject> subjectList;               //과목 리스트
-    private static List<Score> scoreList;                   //점수 리스트
+    public static HashMap<String, Student> studentList;    //수강생 리스트
+    public static List<Subject> subjectList;               //과목 리스트
+    public static List<Score> scoreList;                   //점수 리스트
 
     public DataManger() {
         // 불러와지면 바로 초기화하기!

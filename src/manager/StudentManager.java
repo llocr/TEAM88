@@ -7,25 +7,10 @@ import type.SubjectType;
 
 import java.util.*;
 
-import static model.DataManger.*;
+import static manager.DataManger.*;
 
 public class StudentManager {
-    protected static DataManger dataManger;
-
-    static List<Score> scoreList;
-    static List<Subject> subjectList;
-    static HashMap<String, Student> studentList;
-    private static Scanner sc;
-
-    public StudentManager(DataManger dataManger) {
-        StudentManager.dataManger = dataManger;
-        scoreList = getScoreList();
-        subjectList = getSubjects();
-        studentList = getStudentList();
-        //스캐너
-        sc = new Scanner(System.in);
-    }
-
+    public static Scanner sc = new Scanner(System.in);
 
     public static void createStudent() {
         System.out.println("\n==================================");

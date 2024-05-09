@@ -10,25 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import static model.DataManger.*;
+import static manager.DataManger.*;
 
 public class ScoreManager {
-
-    protected static DataManger dataManger;
-
-    static List<Score> scoreList;
-    static List<Subject> subjectList;
-    static HashMap<String, Student> studentList;
-    private static Scanner sc;
-
-    public ScoreManager(DataManger dataManger) {
-        StudentManager.dataManger = dataManger;
-        scoreList = getScoreList();
-        subjectList = getSubjects();
-        studentList = getStudentList();
-        //스캐너
-        sc = new Scanner(System.in);
-    }
+    public static Scanner sc = new Scanner(System.in);
 
     public static void createScore() {
         // 변수 초기화
