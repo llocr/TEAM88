@@ -1,14 +1,13 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import type.Grade;
+import type.SubjectType;
 
 public class Score {
-    private String scoreId;
-    private String subjectId;
-    private String studentId;
-    private int round;
+    private final String scoreId;
+    private final String subjectId;
+    private final String studentId;
+    private final int round;
     private int score;
     private Grade grade;
     private SubjectType subjectType;
@@ -19,7 +18,7 @@ public class Score {
         this.studentId = studentId;
         this.round = round;
         this.score = score;
-        this.subjectType = subjectType;
+        this.subjectType = type;
         this.grade = GradeCalculator.calculateGrade(score, type);
     }
 

@@ -1,5 +1,8 @@
 package model;
 
+import type.Grade;
+import type.SubjectType;
+
 public class GradeCalculator {
     private static final int[] mandatoryThresholds = {95, 90, 80, 70, 60, 0};
     private static final Grade[] mandatoryGrades = {Grade.A, Grade.B, Grade.C, Grade.D, Grade.F, Grade.N};
