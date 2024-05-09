@@ -28,7 +28,7 @@ public class ScoreManager {
         // 학생 선택
         while (!validInput) {
             System.out.println("\n==================================");
-            System.out.println("조회할 학생의 등록코드를 입력해주세요 : ");
+            System.out.print("조회할 학생의 등록코드를 입력해주세요 : ");
             studentId = sc.next();
 
             student = studentList.get(studentId);
@@ -51,7 +51,7 @@ public class ScoreManager {
         validInput = false;
         while (!validInput) {
             System.out.println("\n==================================");
-            System.out.println("등록할 과목을 선택해주세요.");
+            System.out.print("등록할 과목 ID를 입력해주세요 : ");
             subjectId = sc.next();
 
             for (Subject subj : subjectList) {
@@ -69,9 +69,9 @@ public class ScoreManager {
 
         // 회차와 점수 입력
         while (validInput) {
-            System.out.println("등록하실 회차를 입력해주세요 : ");
+            System.out.print("등록하실 회차를 입력해주세요 : ");
             round = sc.nextInt();
-            System.out.println("등록하실 점수를 입력해주세요 : ");
+            System.out.print("등록하실 점수를 입력해주세요 : ");
             scores = sc.nextInt();
 
             if ((round > 10) || (round < 1)) {
