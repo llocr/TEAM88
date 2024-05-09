@@ -15,7 +15,7 @@ public class Score {
         this.studentId = studentId;
         this.round = round;
         this.score = score;
-        this.subjectType = subjectType;
+        this.subjectType = type;
         this.grade = GradeCalculator.calculateGrade(score, type);
     }
 
