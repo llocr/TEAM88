@@ -1,4 +1,9 @@
-package model;
+package manager;
+
+import model.*;
+import type.Grade;
+import type.Status;
+import type.SubjectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,3 +1,6 @@
+import manager.DataManger;
+import manager.ScoreManager;
+import manager.StudentManager;
 
 import model.*;
 import java.util.*;

@@ -1,5 +1,7 @@
 package model;
 
+import type.Status;
+
 import java.util.ArrayList;
 import java.util.List;
 

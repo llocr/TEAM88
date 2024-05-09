@@ -1,4 +1,9 @@
-package model;
+package manager;
+
+import type.Status;
+import model.Student;
+import model.Subject;
+import type.SubjectType;
 
 import java.util.*;
 

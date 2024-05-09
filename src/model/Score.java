@@ -1,5 +1,8 @@
 package model;
 
+import type.Grade;
+import type.SubjectType;
+
 public class Score {
     private String scoreId;
     private String subjectId;

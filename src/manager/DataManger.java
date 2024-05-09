@@ -1,4 +1,9 @@
-package model;
+package manager;
+
+import model.Score;
+import model.Student;
+import model.Subject;
+import type.SubjectType;
 
 import java.util.ArrayList;
 import java.util.Collection;
