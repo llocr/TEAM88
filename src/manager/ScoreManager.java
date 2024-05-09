@@ -208,7 +208,12 @@ public class ScoreManager {
         String subjectId = sc.next();
 
         // 해당 과목의 성적 조회
-        System.out.println("=== " + getSubjectNameById(subjectId) + " 과목의 성적 ===");         //  과목 이름을 함께 출력
+        if(getSubjectNameById(subjectId) == null){
+            System.out.println("해당 과목의 성적을 조회 할 수 없습니다. 올바른 과목 코드를 입력해주세요 :)");
+        }else{
+            System.out.println("=== " + getSubjectNameById(subjectId) + " 과목의 성적 ===");         //  과목 이름을 함께 출력
+        }
+
 
         for (int round = 1; ; round++) {
             Grade grade = findGrade(subjectId, studentId, round);
@@ -230,7 +235,7 @@ public class ScoreManager {
             }
         }
         // 일치하는 과목 ID가 없을 경우
-        return "알 수 없는 과목";
+        return null;
     }
 
     /*
