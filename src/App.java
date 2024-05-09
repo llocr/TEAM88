@@ -26,7 +26,7 @@ public class App {
             System.out.println("1. 수강생 관리");
             System.out.println("2. 점수 관리");
             System.out.println("3. 프로그램 종료");
-            System.out.print("관리 항목을 선택하세요...");
+            System.out.print("관리 항목을 선택하세요 : ");
             int input = sc.nextInt();
 
             switch (input) {
@@ -34,7 +34,6 @@ public class App {
                 case 2 -> displayScoreView(); // 점수 관리
                 case 3 -> flag = false; // 프로그램 종료
                 default -> System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
-
             }
         }
         System.out.println("프로그램을 종료합니다.");
@@ -50,8 +49,8 @@ public class App {
             System.out.println("1. 수강생 등록하기");
             System.out.println("2. 수강생 아이디 검색");
             System.out.println("3. 수강생 전체 목록 조회");
-            System.out.println("4. 수강생 정보 수정하기");
-            System.out.println("5. 수강생 상태별 목록 조회");
+            System.out.println("4. 수강생 상태별 목록 조회");
+            System.out.println("5. 수강생 정보 수정하기");
             System.out.println("6. 수강생 삭제하기");
             System.out.print("관리 메뉴를 선택하세요 : ");
             int input = sc.nextInt();
@@ -61,8 +60,8 @@ public class App {
                 case 1 -> studentManager.createStudent();
                 case 2 -> studentManager.findStudentId();
                 case 3 -> studentManager.studentInquiry();
-                case 4 -> studentManager.modifyStudentInfo();
-                case 5 -> studentManager.studentStatusInquiry();
+                case 4 -> studentManager.studentStatusInquiry();
+                case 5 -> studentManager.modifyStudentInfo();
                 case 6 -> studentManager.deleteStudent();
                 default -> {
                     System.out.println("잘못된 입력입니다.");
@@ -76,7 +75,7 @@ public class App {
         boolean flag = true;
         while (flag) {
             System.out.println("\n==================================");
-            System.out.println("수강생 관리 페이지");
+            System.out.println("점수 관리 페이지");
             System.out.println("0. 이전 메뉴로 돌아가기");
             System.out.println("1. 수강생의 과목별 시험 회차 및 점수 등록");
             System.out.println("2. 수강생의 과목별 회차 점수 수정");
