@@ -11,5 +11,4 @@ public class App {
             System.out.println("오류가 발생했습니다. 프로그램을 종료합니다.");
         }
     }
-
 }
