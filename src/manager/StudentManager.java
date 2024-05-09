@@ -81,8 +81,6 @@ public class StudentManager {
         //studentList에 수강생 등록
         studentList.put(student.getStudentId(), student);
         System.out.println("\n" + name + " 수강생 등록 성공!");
-
-
     }
 
     public static void findStudentId() {

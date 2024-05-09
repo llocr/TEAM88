@@ -99,48 +99,4 @@ public class DataManger {
             }
         }
     }
-
-
-    public void addStudent(Student student) {
-        studentList.put(student.getStudentId(), student);
-    }
-
-    public Student getStudent(String studentId) {
-        return studentList.get(studentId);
-    }
-
-    public List<Score> getScoresByStudentId(String studentId) {
-        List<Score> scores = new ArrayList<>();
-        for (Score score : scoreList) {
-            if (score.getStudentId().equals(studentId)) {
-                scores.add(score);
-            }
-        }
-        return scores;
-    }
-
-    public void addScore(Score score) {
-        scoreList.add(score);
-    }
-
-    public static List<Subject> getSubjects() {
-        return subjectList;
-    }
-
-    public void removeStudent(String studentId) {
-        studentList.remove(studentId);
-        scoreList.removeIf(score -> score.getStudentId().equals(studentId));
-    }
-
-    public Collection<Student> getAllStudents() {
-        return studentList.values();
-    }
-
-    public static List<Score> getScoreList() {
-        return scoreList;
-    }
-
-    public static HashMap<String, Student> getStudentList() {
-        return studentList;
-    }
 }
