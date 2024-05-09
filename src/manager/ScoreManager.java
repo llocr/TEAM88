@@ -177,8 +177,8 @@ public class ScoreManager {
     }
 
     /*
-    3. 특정 과목 회차별 등급 조회
-     */
+3. 특정 과목 회차별 등급 조회
+*/
     public static void displayGradeView() {
         System.out.print("학생 ID를 입력하세요: ");
         String studentId = sc.next();
@@ -189,7 +189,7 @@ public class ScoreManager {
             return;
         }
         String studentName = studentList.get(studentId).getStudentName();
-        System.out.println(studentName+"학생이 수강중인 과목 입니다.");
+        System.out.println(studentName + " 학생이 수강중인 과목 입니다.");
 
         // 수강 중인 과목 목록 출력
         Student student = studentList.get(studentId);
@@ -208,19 +208,21 @@ public class ScoreManager {
         String subjectId = sc.next();
 
         // 해당 과목의 성적 조회
-        if(getSubjectNameById(subjectId) == null){
+        if (getSubjectNameById(subjectId) == null) {
             System.out.println("해당 과목의 성적을 조회 할 수 없습니다. 올바른 과목 코드를 입력해주세요 :)");
-        }else{
-            System.out.println("=== " + getSubjectNameById(subjectId) + " 과목의 성적 ===");         //  과목 이름을 함께 출력
-        }
+        } else {
+            System.out.println("=== " + getSubjectNameById(subjectId) + " 과목의 성적 ==="); // 과목 이름을 함께 출력
 
+        // 회차 선택
+            System.out.print("조회할 회차를 입력하세요: ");
+            int round = sc.nextInt();
 
-        for (int round = 1; ; round++) {
             Grade grade = findGrade(subjectId, studentId, round);
             if (grade == Grade.N) {
-                break; // 해당 회차의 학점이 없으면 중지
+                System.out.println("해당 회차의 학점이 없습니다.");
+            } else {
+                System.out.println(round + "회차 : " + grade);
             }
-            System.out.println(round + "회차 : " + grade);
         }
     }
 
